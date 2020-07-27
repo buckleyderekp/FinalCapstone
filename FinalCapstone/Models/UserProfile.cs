@@ -15,12 +15,9 @@ namespace FinalCapstone.Models
         public string FirebaseUserId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
+        [MaxLength(100)]
+        public string Name { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
 
         [Required]
         [MaxLength(255)]

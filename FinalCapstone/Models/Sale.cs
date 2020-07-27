@@ -20,7 +20,7 @@ namespace FinalCapstone.Models
         public int Commission { get; set; }
 
         [Required]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
         public int Closes { get; set; }

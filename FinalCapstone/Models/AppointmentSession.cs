@@ -11,19 +11,16 @@ namespace FinalCapstone.Models
         public int Id { get; set; }
 
         [Required]
-        public int Calls { get; set; }
-
-        [Required]
-        public string Date { get; set; }
-
-        [Required]
-        public int Contacts { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
         public int AppointmentsKept { get; set; }
 
         [Required]
         public int Sales { get; set; }
+
+        [Required]
+        public int Presentations { get; set; }
 
         [Required]
         public int UserProfileId { get; set; }

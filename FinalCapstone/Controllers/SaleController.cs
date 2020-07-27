@@ -12,12 +12,13 @@ namespace FinalCapstone.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CallSessionController : ControllerBase
+    public class SaleController : ControllerBase
     {
-        private readonly CallSessionRepository _callSessionRepo;
-        public CallSessionController(ApplicationDBContext context)
+
+        private readonly SaleRepository _saleRepo;
+        public SaleController(ApplicationDBContext context)
         {
-            _callSessionRepo = new CallSessionRepository(context);
+            _saleRepo = new SaleRepository(context);
         }
 
         [HttpGet("{id}")]
@@ -25,39 +26,40 @@ namespace FinalCapstone.Controllers
         {
 
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var callSessions = _callSessionRepo.GetByUserId(id, startdate);
-            if (callSessions == null)
+            var sales = _saleRepo.GetByUserId(id, startdate);
+            if (sales == null)
             {
                 return NotFound();
             }
-            return Ok(callSessions);
+            return Ok(sales);
         }
 
         [HttpPost]
-        public IActionResult CallSession(CallSession callsession)
+        public IActionResult Sale(Sale sale)
         {
-            _callSessionRepo.Add(callsession);
-            return CreatedAtAction("Get", new { id = callsession.Id }, callsession);
+            _saleRepo.Add(sale);
+            return CreatedAtAction("Get", new { id = sale.Id }, sale);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, CallSession callsession)
+        public IActionResult Put(int id, Sale sale)
         {
-            if (id != callsession.Id)
+            if (id != sale.Id)
             {
                 return BadRequest();
             }
 
-            _callSessionRepo.Update(callsession);
+            _saleRepo.Update(sale);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _callSessionRepo.Delete(id);
+            _saleRepo.Delete(id);
             return NoContent();
         }
+
 
     }
 }

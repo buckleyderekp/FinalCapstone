@@ -1,5 +1,6 @@
 ﻿using FinalCapstone.Data;
 using FinalCapstone.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,38 @@ namespace FinalCapstone.Repositories
             _context = context;
         }
 
-        public List<CallSession> GetById(int id)
+        public List<CallSession> GetByUserId(int id, DateTime startdate)
         {
             return _context.CallSession
                             .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
                             .OrderByDescending(cs => cs.Date) 
                             .ToList();
+        }
+
+        public void Add(CallSession callsession)
+        {
+            _context.Add(callsession);
+            _context.SaveChanges();
+        }
+
+        public void Update(CallSession callsession)
+        {
+            _context.Entry(callsession).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Delete(int id)
+        {
+            var callsession = GetById(id);
+            _context.CallSession.Remove(callsession);
+            _context.SaveChanges();
+        }
+
+        public CallSession GetById(int id)
+        {
+            return _context.CallSession
+                           .FirstOrDefault(cs => cs.Id == id);
         }
     }
 }

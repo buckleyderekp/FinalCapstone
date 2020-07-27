@@ -34,8 +34,7 @@ GO
 
 CREATE TABLE [UserProfile] (
   [Id] INTEGER IDENTITY PRIMARY KEY NOT NULL,
-  [FirstName] nvarchar(25) NOT NULL,
-  [LastName] nvarchar(25) NOT NULL,
+  [Name] nvarchar(255) NOT NULL,
   [Email] nvarchar(255) NOT NULL,
   [FirebaseUserId] nvarchar(28) NOT NULL,
   [OrganizationId] integer NOT NULL,
@@ -50,9 +49,10 @@ GO
 CREATE TABLE [CallSession] (
   [Id] INTEGER IDENTITY PRIMARY KEY NOT NULL,
   [Calls] integer NOT NULL,
+  [CallGoal] integer NOT NULL,
   [Contacts] integer NOT NULL,
   [AppontmentsBooked] integer NOT NULL,
-  [Date] nvarchar(255) NOT NULL,
+  [Date] DateTime NOT NULL,
   [UserProfileId] integer NOT NULL,
 
   CONSTRAINT FK_CallSession_UserProfile FOREIGN KEY (UserProfileId) REFERENCES UserProfile(Id)
@@ -64,7 +64,7 @@ CREATE TABLE [AppointmentSession] (
   [AppointmentsKept] integer NOT NULL,
   [Presentations] integer NOT NULL,
   [Sales] integer NOT NULL,
-  [Date] nvarchar(255) NOT NULL,
+  [Date] DateTime NOT NULL,
   [UserProfileId] integer NOT NULL,
 
   CONSTRAINT FK_AppointmentSession_UserProfile FOREIGN KEY (UserProfileId) REFERENCES UserProfile(id)
@@ -84,7 +84,7 @@ CREATE TABLE [Sales] (
   [Id] INTEGER IDENTITY PRIMARY KEY NOT NULL,
   [ProductId] integer NOT NULL,
   [Commission] integer NOT NULL,
-  [Date] nvarchar(255) NOT NULL,
+  [Date] DateTime NOT NULL,
   [Closes] integer NOT NULL,
   [UserProfileId] integer NOT NULL,
 

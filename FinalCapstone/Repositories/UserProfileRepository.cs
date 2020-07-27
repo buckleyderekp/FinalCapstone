@@ -41,5 +41,10 @@ namespace FinalCapstone.Repositories
             _context.UserProfile.Remove(user);
             _context.SaveChanges();
         }
+
+        public UserProfile GetByFirebaseId(string FirebaseUserId)
+        {
+            return _context.UserProfile.FirstOrDefault(p => p.FirebaseUserId == FirebaseUserId);
+        }
     }
 }

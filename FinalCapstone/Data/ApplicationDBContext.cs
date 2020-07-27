@@ -21,8 +21,8 @@ namespace FinalCapstone.Data
 
         public DbSet<CallSession> CallSession { get; set; }
 
-        public DbSet<AppointmentSession> AppointmentSessions { get; set; }
+        public DbSet<AppointmentSession> AppointmentSession { get; set; }
 
-        public DbSet<Sale> Sale { get; set; }
+        public DbSet<Sale> Sales { get; set; }
     }
 }

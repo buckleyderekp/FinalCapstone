@@ -11,19 +11,69 @@ export const Dashboard = () => {
     const [goals, setGoals] = useState([])
     const [dates, setDates] = useState([])
     const [calls, setCalls] = useState([])
-    const mockData = [1, 2, 3, 4, 5]
+
+    let callsArray = []
+    let callGoalArray = []
+    let dateArray = []
 
     useEffect(() => {
-        getTimeCallSessions(1, 30);
+        getTimeCallSessions(1, 60);
     }, []);
+
+    useEffect(() => {
+        if (time === "sevendays") {
+            getTimeCallSessions(1, 7)
+        }
+        else if (time === "thirtydays") {
+            getTimeCallSessions(1, 30)
+        }
+        else if (time === "ninetydays") {
+            getTimeCallSessions(1, 90)
+        }
+        else if (time === "oneyear") {
+            getTimeCallSessions(1, 365)
+        }
+    }, [time])
+
+    useEffect(() => {
+        const copy = callSessions.slice()
+        copy.map(c => {
+            callsArray.push(c.calls)
+            callGoalArray.push(c.callGoal)
+            const unformatedDate = c.date.split("T")[0]
+            const [year, month, day] = unformatedDate.split("-");
+            const formatedDate = month + "/" + day;
+            dateArray.push(formatedDate)
+        })
+        setCalls(callsArray)
+        setDates(dateArray)
+        setGoals(callGoalArray)
+        console.log(callSessions.callgoal)
+    }, [callSessions])
 
     let lineState = {
         data: {
-            labels: ["why", "won't", "this", "work"],
+            labels: dates,
             datasets: [
                 {
+                    fillColor: "rgba(220,220,220,0.6)",
+                    strokeColor: "rgba(220,220,220,1)",
                     label: 'Number Of Calls',
-                    data: mockData
+                    data: calls,
+                    fill: false,
+                    lineTension: .3,
+                    backgroundColor: "#296098",
+                    borderColor: "#3F7FBF"
+
+                },
+                {
+                    label: 'Call Goal',
+                    data: goals,
+                    fill: false,
+                    lineTension: .3,
+                    backgroundColor: "#982936",
+                    borderColor: "#982936"
+
                 }
             ]
         }

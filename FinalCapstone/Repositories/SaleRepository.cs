@@ -51,5 +51,24 @@ namespace FinalCapstone.Repositories
             return _context.Sales
                            .FirstOrDefault(s => s.Id == id);
         }
+
+        public int GetSalesTotal(int id, DateTime startdate)
+        {
+            return _context.Sales
+                            .Where(s => s.UserProfileId == id)
+                            .Where(s => s.Date >= startdate)
+                            .Count();
+
+        }
+
+        public IGrouping<int, Sale> GetSalesByProduct(int id, DateTime startdate)
+        {
+            return (IGrouping<int, Sale>)_context.Sales
+                            .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
+                            .GroupBy(s => s.ProductId);
+
+        }
+
     }
 }

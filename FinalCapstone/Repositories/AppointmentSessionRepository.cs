@@ -26,6 +26,24 @@ namespace FinalCapstone.Repositories
                             .ToList();
         }
 
+        public int GetAppointmentKeptTotal(int id, DateTime startdate)
+        {
+            return _context.AppointmentSession
+                            .Where(a => a.UserProfileId == id)
+                            .Where(a => a.Date >= startdate)
+                            .Sum(a => a.AppointmentsKept);
+
+        }
+
+        public int GetPresentationsTotal(int id, DateTime startdate)
+        {
+            return _context.AppointmentSession
+                            .Where(a => a.UserProfileId == id)
+                            .Where(a => a.Date >= startdate)
+                            .Sum(a => a.Presentations);
+
+        }
+
         public void Add(AppointmentSession appointmentsession)
         {
             _context.Add(appointmentsession);

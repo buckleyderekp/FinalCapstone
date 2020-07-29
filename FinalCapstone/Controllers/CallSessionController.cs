@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using FinalCapstone.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,6 +58,24 @@ namespace FinalCapstone.Controllers
         {
             _callSessionRepo.Delete(id);
             return NoContent();
+        }
+
+        [HttpGet("{id}/contactratio")]
+        public IActionResult GetContactRatio(int id, int days)
+        {
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var contacts = _callSessionRepo.GetContactsTotal(id, startdate);
+            var appointmentsBooked = _callSessionRepo.GetAppointmentBookedTotal(id, startdate);
+
+
+
+            var appointmentRatioView = new ContactRatioViewModel()
+            {
+                Contacts = contacts,
+                AppointmentsBooked = appointmentsBooked
+            };
+            return Ok(appointmentRatioView);
+
         }
 
     }

@@ -7,6 +7,8 @@ import Header from './components/Header';
 import ApplicationViews from './components/ApplicationViews';
 import { UserProfileProvider } from './components/providers/UserProfileProvider';
 import { CallSessionProvider } from './components/providers/CallSessionProvider';
+import { AppointmentSessionProvider } from './components/providers/AppointmentSessionProvider';
+import { SaleProvider } from './components/providers/SaleProvider';
 
 
 const firebaseConfig = {
@@ -20,8 +22,12 @@ function App() {
     <Router>
       <UserProfileProvider>
         <CallSessionProvider>
-          <Header />
-          <ApplicationViews />
+          <AppointmentSessionProvider>
+            <SaleProvider>
+              <Header />
+              <ApplicationViews />
+            </SaleProvider>
+          </AppointmentSessionProvider>
         </CallSessionProvider>
       </UserProfileProvider>
     </Router>

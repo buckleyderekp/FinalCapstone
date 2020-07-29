@@ -22,9 +22,29 @@ namespace FinalCapstone.Repositories
             return _context.CallSession
                             .Where(cs => cs.UserProfileId == id)
                             .Where(cs => cs.Date >= startdate)
-                            .OrderByDescending(cs => cs.Date) 
+                            .OrderBy(cs => cs.Date) 
                             .ToList();
         }
+
+        public int GetAppointmentBookedTotal(int id, DateTime startdate)
+        {
+            return _context.CallSession
+                            .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
+                            .Sum(cs => cs.AppointmentsBooked);
+
+        }
+
+        public int GetContactsTotal(int id, DateTime startdate)
+        {
+            return _context.CallSession
+                            .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
+                            .Sum(cs => cs.Contacts);
+
+        }
+
+
 
         public void Add(CallSession callsession)
         {

@@ -3,17 +3,17 @@ import React, { useState, useContext } from "react";
 import { UserProfileContext } from "./UserProfileProvider"
 import "firebase/auth";
 
-export const CallSessionContext = React.createContext();
+export const SaleContext = React.createContext();
 
-export const CallSessionProvider = (props) => {
-    const [callSessions, setCallSessions] = useState([]);
-    const [contactRatio, setContactRatio] = useState([]);
+export const SaleProvider = (props) => {
+    const [sales, setSales] = useState([]);
+    const [closingRatio, setClosingRatio] = useState([]);
 
-    const apiUrl = "/api/callsession";
+    const apiUrl = "/api/sale";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getTimeCallSessions = (id, days) =>
+    const getTimeSales = (id, days) =>
         getToken().then((token) =>
             fetch(`${apiUrl}/${id}/?days=${days}`, {
                 method: "GET",
@@ -22,24 +22,24 @@ export const CallSessionProvider = (props) => {
                 }
             }).then((res) => res.json())
                 .then((res) => {
-                    setCallSessions(res)
+                    setSales(res)
                     return res
                 }));
 
-    const getContactRatio = (id, days) =>
+    const getClosingRatio = (id, days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/contactratio/?days=${days}`, {
+            fetch(`${apiUrl}/${id}/closingratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }).then((res) => res.json())
                 .then((res) => {
-                    setContactRatio(res)
+                    setClosingRatio(res)
                     return res
                 }));
 
-    const addCallSession = (callsession) =>
+    const addSale = (sale) =>
         getToken().then((token) =>
             fetch(apiUrl, {
                 method: "POST",
@@ -47,7 +47,7 @@ export const CallSessionProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(callsession),
+                body: JSON.stringify(sale),
             }).then(resp => {
                 if (resp.ok) {
                     return resp.json();
@@ -56,9 +56,7 @@ export const CallSessionProvider = (props) => {
             }));
 
 
-
-
-    const getSession = (id) => {
+    const getSale = (id) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "Get",
@@ -74,23 +72,8 @@ export const CallSessionProvider = (props) => {
             }));
     }
 
-    const getUserCallSessions = (id) => {
-        getToken().then((token) =>
-            fetch(apiUrl + `/getbyuser/${id}`, {
-                method: "Get",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }).then(resp => {
-                if (resp.ok) {
-                    return resp.json().then(setCallSessions);
-                }
-                throw new Error("Unauthorized");
-            }))
-    };
 
-    const deleteCallSessionById = (id) => {
+    const deleteSaleById = (id) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "DELETE",
@@ -106,7 +89,7 @@ export const CallSessionProvider = (props) => {
         );
     };
 
-    const editCallSession = (id, callsession) => {
+    const editSale = (id, sale) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "PUT",
@@ -114,7 +97,7 @@ export const CallSessionProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(callsession),
+                body: JSON.stringify(sale),
             }).then(resp => {
                 if (resp.ok) {
                     return;
@@ -125,8 +108,19 @@ export const CallSessionProvider = (props) => {
 
 
     return (
-        <CallSessionContext.Provider value={{ contactRatio, getContactRatio, callSessions, getUserCallSessions, setCallSessions, addCallSession, getTimeCallSessions, editCallSession, deleteCallSessionById, addCallSession, getSession }}>
+        <SaleContext.Provider value={{
+            closingRatio,
+            setClosingRatio,
+            sales,
+            setSales,
+            getTimeSales,
+            addSale,
+            editSale,
+            deleteSaleById,
+            getSale,
+            getClosingRatio
+        }}>
             {props.children}
-        </CallSessionContext.Provider>
+        </SaleContext.Provider>
     );
 };

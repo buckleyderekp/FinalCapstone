@@ -1,19 +1,20 @@
-
 import React, { useState, useContext } from "react";
 import { UserProfileContext } from "./UserProfileProvider"
 import "firebase/auth";
 
-export const CallSessionContext = React.createContext();
+export const AppointmentSessionContext = React.createContext();
 
-export const CallSessionProvider = (props) => {
-    const [callSessions, setCallSessions] = useState([]);
-    const [contactRatio, setContactRatio] = useState([]);
+export const AppointmentSessionProvider = (props) => {
+    const [appointmentSessions, setAppointmentSessions] = useState([]);
+    const [appointmentRatio, setAppointmentRatio] = useState([]);
+    const [presentationRatio, setPresentationRatio] = useState([]);
+    const [time, setTime] = useState("sevendays");
 
-    const apiUrl = "/api/callsession";
+    const apiUrl = "/api/appointmentsession";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getTimeCallSessions = (id, days) =>
+    const getTimeAppointmentSessions = (id, days) =>
         getToken().then((token) =>
             fetch(`${apiUrl}/${id}/?days=${days}`, {
                 method: "GET",
@@ -22,24 +23,39 @@ export const CallSessionProvider = (props) => {
                 }
             }).then((res) => res.json())
                 .then((res) => {
-                    setCallSessions(res)
+                    setAppointmentSessions(res)
                     return res
                 }));
 
-    const getContactRatio = (id, days) =>
+    const getAppointmentRatio = (id, days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/contactratio/?days=${days}`, {
+            fetch(`${apiUrl}/${id}/appointmentratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }).then((res) => res.json())
                 .then((res) => {
-                    setContactRatio(res)
+                    setAppointmentRatio(res)
                     return res
                 }));
 
-    const addCallSession = (callsession) =>
+    const getPresentationRatio = (id, days) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}/presentationratio/?days=${days}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json())
+                .then((res) => {
+                    setPresentationRatio(res)
+                    return res
+                }));
+
+
+
+    const addAppointmentSession = (appsession) =>
         getToken().then((token) =>
             fetch(apiUrl, {
                 method: "POST",
@@ -47,7 +63,7 @@ export const CallSessionProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(callsession),
+                body: JSON.stringify(appsession),
             }).then(resp => {
                 if (resp.ok) {
                     return resp.json();
@@ -58,7 +74,7 @@ export const CallSessionProvider = (props) => {
 
 
 
-    const getSession = (id) => {
+    const getAppointmentSession = (id) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "Get",
@@ -74,7 +90,7 @@ export const CallSessionProvider = (props) => {
             }));
     }
 
-    const getUserCallSessions = (id) => {
+    const getUserAppointmentSessions = (id) => {
         getToken().then((token) =>
             fetch(apiUrl + `/getbyuser/${id}`, {
                 method: "Get",
@@ -84,13 +100,13 @@ export const CallSessionProvider = (props) => {
                 },
             }).then(resp => {
                 if (resp.ok) {
-                    return resp.json().then(setCallSessions);
+                    return resp.json().then(setAppointmentSessions);
                 }
                 throw new Error("Unauthorized");
             }))
     };
 
-    const deleteCallSessionById = (id) => {
+    const deleteAppointmentSessionById = (id) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "DELETE",
@@ -106,7 +122,7 @@ export const CallSessionProvider = (props) => {
         );
     };
 
-    const editCallSession = (id, callsession) => {
+    const editAppointmentSession = (id, appsession) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
                 method: "PUT",
@@ -114,7 +130,7 @@ export const CallSessionProvider = (props) => {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(callsession),
+                body: JSON.stringify(appsession),
             }).then(resp => {
                 if (resp.ok) {
                     return;
@@ -125,8 +141,26 @@ export const CallSessionProvider = (props) => {
 
 
     return (
-        <CallSessionContext.Provider value={{ contactRatio, getContactRatio, callSessions, getUserCallSessions, setCallSessions, addCallSession, getTimeCallSessions, editCallSession, deleteCallSessionById, addCallSession, getSession }}>
+        <AppointmentSessionContext.Provider value={{
+            time,
+            setTime,
+            getAppointmentRatio,
+            appointmentRatio,
+            setAppointmentRatio,
+            appointmentSessions,
+            getUserAppointmentSessions,
+            setAppointmentSessions,
+            addAppointmentSession,
+            getTimeAppointmentSessions,
+            editAppointmentSession,
+            deleteAppointmentSessionById,
+            addAppointmentSession,
+            getAppointmentSession,
+            getPresentationRatio,
+            presentationRatio,
+            setPresentationRatio
+        }}>
             {props.children}
-        </CallSessionContext.Provider>
+        </AppointmentSessionContext.Provider>
     );
 };

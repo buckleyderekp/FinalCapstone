@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using FinalCapstone.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,11 @@ namespace FinalCapstone.Controllers
     {
 
         private readonly SaleRepository _saleRepo;
+        private readonly AppointmentSessionRepository _appointmentSessionRepo;
         public SaleController(ApplicationDBContext context)
         {
             _saleRepo = new SaleRepository(context);
+            _appointmentSessionRepo = new AppointmentSessionRepository(context);
         }
 
         [HttpGet("{id}")]
@@ -32,6 +35,32 @@ namespace FinalCapstone.Controllers
                 return NotFound();
             }
             return Ok(sales);
+        }
+
+        [HttpGet("{id}/salesbyproduct")]
+        public IActionResult GetSalesByProduct(int id, int days)
+        {
+
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var salesByProduct = _saleRepo.GetSalesByProduct(id, startdate);
+
+            return Ok(salesByProduct);
+        }
+
+        [HttpGet("{id}/closingratio")]
+        public IActionResult GetClosingRatio(int id, int days)
+        {
+
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var sales = _saleRepo.GetSalesTotal(id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
+
+            var closingRatioView = new ClosingRatioViewModel()
+            {
+                Presentations = presentations,
+                Sales = sales
+            };
+            return Ok(closingRatioView);
         }
 
         [HttpPost]

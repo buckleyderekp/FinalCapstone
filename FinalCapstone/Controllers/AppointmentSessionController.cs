@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using FinalCapstone.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,11 @@ namespace FinalCapstone.Controllers
     public class AppointmentSessionController : ControllerBase
     {
         private readonly AppointmentSessionRepository _appointmentSessionRepo;
+        private readonly CallSessionRepository _callSessionRepo;
         public AppointmentSessionController(ApplicationDBContext context)
         {
             _appointmentSessionRepo = new AppointmentSessionRepository(context);
+            _callSessionRepo = new CallSessionRepository(context);
         }
 
         [HttpGet("{id}")]
@@ -31,6 +34,42 @@ namespace FinalCapstone.Controllers
                 return NotFound();
             }
             return Ok(appointmentSessions);
+        }
+
+        [HttpGet("{id}/appointmentratio")]
+        public IActionResult GetAppointmentRatio(int id, int days)
+        {
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(id, startdate);
+            var appointmentsBooked = _callSessionRepo.GetAppointmentBookedTotal(id, startdate);
+
+
+
+            var appointmentRatioView = new AppointmentRatioViewModel()
+            {
+                AppointmentsKept = appointmentsKept,
+                AppointmentsBooked = appointmentsBooked
+            };
+            return Ok(appointmentRatioView);
+
+        }
+
+        [HttpGet("{id}/presentationratio")]
+        public IActionResult GetPresentationRatio(int id, int days)
+        {
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
+
+
+
+            var presentationsRatioView = new PresentationsRatioViewModel()
+            {
+                AppointmentsKept = appointmentsKept,
+                Presentations = presentations
+            };
+            return Ok(presentationsRatioView);
+
         }
 
         [HttpPost]

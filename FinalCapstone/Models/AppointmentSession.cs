@@ -17,9 +17,6 @@ namespace FinalCapstone.Models
         public int AppointmentsKept { get; set; }
 
         [Required]
-        public int Sales { get; set; }
-
-        [Required]
         public int Presentations { get; set; }
 
         [Required]

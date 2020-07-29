@@ -1,86 +1,15 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "./Dashboard.css"
 import { Button } from "reactstrap";
-import { Line, Pie } from 'react-chartjs-2';
-import { CallSessionContext } from "./providers/CallSessionProvider";
+import { AppointmentSessionContext } from "./providers/AppointmentSessionProvider";
+import { AppointmentRatioPie } from "./Graphs/AppointmentRatioPie";
+import { ContactsPie } from "./Graphs/ContactsPie";
+import { CallsComparisonLine } from "./Graphs/CallsComparisonLine";
+import { PresentationPie } from "./Graphs/PresentationRatioPie";
+import { ClosingRatioPie } from "./Graphs/ClosingRatioPie";
 
 export const Dashboard = () => {
-
-    const [time, setTime] = useState("sevendays")
-    const { callSessions, getTimeCallSessions } = useContext(CallSessionContext)
-    const [goals, setGoals] = useState([])
-    const [dates, setDates] = useState([])
-    const [calls, setCalls] = useState([])
-
-    let callsArray = []
-    let callGoalArray = []
-    let dateArray = []
-
-    useEffect(() => {
-        getTimeCallSessions(1, 60);
-    }, []);
-
-    useEffect(() => {
-        if (time === "sevendays") {
-            getTimeCallSessions(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getTimeCallSessions(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getTimeCallSessions(1, 90)
-        }
-        else if (time === "oneyear") {
-            getTimeCallSessions(1, 365)
-        }
-    }, [time])
-
-    useEffect(() => {
-        const copy = callSessions.slice()
-        copy.map(c => {
-            callsArray.push(c.calls)
-            callGoalArray.push(c.callGoal)
-            const unformatedDate = c.date.split("T")[0]
-            const [year, month, day] = unformatedDate.split("-");
-            const formatedDate = month + "/" + day;
-            dateArray.push(formatedDate)
-        })
-        setCalls(callsArray)
-        setDates(dateArray)
-        setGoals(callGoalArray)
-        console.log(callSessions.callgoal)
-    }, [callSessions])
-
-    let lineState = {
-        data: {
-            labels: dates,
-            datasets: [
-                {
-                    fillColor: "rgba(220,220,220,0.6)",
-                    strokeColor: "rgba(220,220,220,1)",
-                    label: 'Number Of Calls',
-                    data: calls,
-                    fill: false,
-                    lineTension: .3,
-                    backgroundColor: "#296098",
-                    borderColor: "#3F7FBF"
-
-                },
-                {
-                    label: 'Call Goal',
-                    data: goals,
-                    fill: false,
-                    lineTension: .3,
-                    backgroundColor: "#982936",
-                    borderColor: "#982936"
-
-                }
-            ]
-        }
-    }
-
-
-
+    const { time, setTime } = useContext(AppointmentSessionContext)
 
     return (
         <>
@@ -92,26 +21,14 @@ export const Dashboard = () => {
                 {(time === "oneyear") ? <Button color="light" className="timeButton buttonone" >Past year</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime("oneyear")}>Past year</Button>}
             </div>
             <div className="gridrow1">
-                <div className="gridrow1--1 chartcontainer1">
-                    <Line
-                        data={lineState.data}
-                        options={{
-                            maintainAspectRatio: false,
-                            title: {
-                                display: true,
-                                text: 'Calls',
-                                fontSize: 20,
-                            }
-                        }}
-                    >
-                    </Line></div>
+                <div className="gridrow1--1 chartcontainer1"><CallsComparisonLine /></div>
                 <div className="gridrow1--2 chartcontainer1"></div>
             </div>
             <div className="gridrow2">
-                <div className="gridrow2--1 chartcontainer2"><Pie></Pie></div>
-                <div className="gridrow2--2 chartcontainer2"></div>
-                <div className="gridrow2--3 chartcontainer2"></div>
-                <div className="gridrow2--4 chartcontainer2"></div>
+                <div className="gridrow2--1 chartcontainer2"><ContactsPie /></div>
+                <div className="gridrow2--2 chartcontainer2"><AppointmentRatioPie /></div>
+                <div className="gridrow2--3 chartcontainer2"><PresentationPie /></div>
+                <div className="gridrow2--4 chartcontainer2"><ClosingRatioPie/></div>
                 <div className="gridrow2--5 chartcontainer2"></div>
                 <div className="gridrow2--6 chartcontainer2"></div>
             </div>

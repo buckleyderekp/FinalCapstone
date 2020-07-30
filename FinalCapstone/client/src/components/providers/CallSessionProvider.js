@@ -8,6 +8,7 @@ export const CallSessionContext = React.createContext();
 export const CallSessionProvider = (props) => {
     const [callSessions, setCallSessions] = useState([]);
     const [contactRatio, setContactRatio] = useState([]);
+    const [callLog, setCallLog] = useState([]);
 
     const apiUrl = "/api/callsession";
     const { getToken } = useContext(UserProfileContext);
@@ -84,7 +85,7 @@ export const CallSessionProvider = (props) => {
                 },
             }).then(resp => {
                 if (resp.ok) {
-                    return resp.json().then(setCallSessions);
+                    return resp.json().then(setCallLog);
                 }
                 throw new Error("Unauthorized");
             }))

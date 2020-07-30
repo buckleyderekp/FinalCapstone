@@ -14,7 +14,7 @@ namespace FinalCapstone.Models
         public int Calls { get; set; }
 
         [Required]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         [Required]
         public int Contacts { get; set; }

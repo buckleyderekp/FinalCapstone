@@ -20,16 +20,16 @@ namespace FinalCapstone.Controllers
                 _userRepo = new UserProfileRepository(context);
             }
 
-            [HttpGet("{id}")]
-            public IActionResult Get(int id)
-            {
-                var user = _userRepo.GetById(id);
-                if (user == null)
-                {
-                    return NotFound();
-                }
-                return Ok(user);
-            }
+            //[HttpGet("{id}")]
+            //public IActionResult Get(int id)
+            //{
+            //    var user = _userRepo.GetById(id);
+            //    if (user == null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    return Ok(user);
+            //}
 
             [HttpPost]
             public IActionResult Post(UserProfile user)
@@ -57,5 +57,16 @@ namespace FinalCapstone.Controllers
                 return NoContent();
             }
 
+        [HttpGet("{FirebaseId}")]
+        public IActionResult Get(string FirebaseId)
+        {
+            var user = _userRepo.GetByFirebaseId(FirebaseId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
+
+    }
     }

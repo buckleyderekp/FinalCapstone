@@ -8,6 +8,8 @@ export const SaleContext = React.createContext();
 export const SaleProvider = (props) => {
     const [sales, setSales] = useState([]);
     const [closingRatio, setClosingRatio] = useState([]);
+    const [salesByProduct, setSalesByProduct] = useState([]);
+    const [commissionByProduct, setCommissionByProduct] = useState([]);
 
     const apiUrl = "/api/sale";
     const { getToken } = useContext(UserProfileContext);
@@ -38,6 +40,33 @@ export const SaleProvider = (props) => {
                     setClosingRatio(res)
                     return res
                 }));
+
+    const getSalesByProduct = (id, days) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}/salesbyproduct/?days=${days}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json())
+                .then((res) => {
+                    setSalesByProduct(res)
+                    return res
+                }));
+
+    const getCommissionByProduct = (id, days) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}/commissionbyproduct/?days=${days}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json())
+                .then((res) => {
+                    setCommissionByProduct(res)
+                    return res
+                }));
+
 
     const addSale = (sale) =>
         getToken().then((token) =>
@@ -118,7 +147,13 @@ export const SaleProvider = (props) => {
             editSale,
             deleteSaleById,
             getSale,
-            getClosingRatio
+            getClosingRatio,
+            getSalesByProduct,
+            salesByProduct,
+            setSalesByProduct,
+            commissionByProduct,
+            setCommissionByProduct,
+            getCommissionByProduct
         }}>
             {props.children}
         </SaleContext.Provider>

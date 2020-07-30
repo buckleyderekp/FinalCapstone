@@ -41,7 +41,7 @@ export const PresentationPie = () => {
                 {
                     label: "Presentations",
                     data: presentationData,
-                    backgroundColor: ['#296098', "#982936"]
+                    backgroundColor: ["#598829", "#982936"]
                 }
             ]
         }

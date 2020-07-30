@@ -1,5 +1,6 @@
 ﻿using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,12 +62,53 @@ namespace FinalCapstone.Repositories
 
         }
 
-        public IGrouping<int, Sale> GetSalesByProduct(int id, DateTime startdate)
+        public int GetClosesTotal(int id, DateTime startdate)
         {
-            return (IGrouping<int, Sale>)_context.Sales
-                            .Where(cs => cs.UserProfileId == id)
-                            .Where(cs => cs.Date >= startdate)
-                            .GroupBy(s => s.ProductId);
+            return _context.Sales
+                            .Where(s => s.UserProfileId == id)
+                            .Where(s => s.Date >= startdate)
+                            .Sum( s => s.Closes);
+
+        }
+
+        public int GetCommissionTotal(int id, DateTime startdate)
+        {
+            return _context.Sales
+                            .Where(s => s.UserProfileId == id)
+                            .Where(s => s.Date >= startdate)
+                            .Sum(s => s.Commission);
+
+        }
+
+
+        public IEnumerable<SaleByTypeViewModel> GetSalesByProduct(int id, DateTime startdate)
+        {
+            return _context.Product
+                            
+                            .Select(p => 
+                              new SaleByTypeViewModel()
+                              {
+                                  NumberOfSales = _context.Sales
+                                  .Count(s => s.UserProfileId == id && s.Date >= startdate && s.ProductId == p.Id),
+                                  Product = p,
+ 
+                              }).ToList();
+
+        }
+
+        public IEnumerable<SaleByTypeViewModel> GetCommissionByProduct(int id, DateTime startdate)
+        {
+            return _context.Product
+
+                            .Select(p =>
+                              new SaleByTypeViewModel()
+                              {
+                                  NumberOfSales = _context.Sales
+                                  .Where(s => s.UserProfileId == id && s.Date >= startdate && s.ProductId == p.Id)
+                                  .Sum(s => s.Commission),
+                                  Product = p,
+
+                              }).ToList();
 
         }
 

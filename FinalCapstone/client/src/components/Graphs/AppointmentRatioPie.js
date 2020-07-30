@@ -39,7 +39,7 @@ export const AppointmentRatioPie = () => {
                 {
                     label: "Appointments",
                     data: appointmentKeptData,
-                    backgroundColor: ["#982936", '#296098' ]
+                    backgroundColor: ["#58287A", '#296098' ]
                 }
             ]
         }

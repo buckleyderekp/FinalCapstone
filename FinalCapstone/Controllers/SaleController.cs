@@ -47,6 +47,16 @@ namespace FinalCapstone.Controllers
             return Ok(salesByProduct);
         }
 
+        [HttpGet("{id}/commissionbyproduct")]
+        public IActionResult GetCommissionByProduct(int id, int days)
+        {
+
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var commissionByProduct = _saleRepo.GetCommissionByProduct(id, startdate);
+
+            return Ok(commissionByProduct);
+        }
+
         [HttpGet("{id}/closingratio")]
         public IActionResult GetClosingRatio(int id, int days)
         {

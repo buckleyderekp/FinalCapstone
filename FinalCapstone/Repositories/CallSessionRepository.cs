@@ -44,6 +44,15 @@ namespace FinalCapstone.Repositories
 
         }
 
+        public int GetCallsTotal(int id, DateTime startdate)
+        {
+            return _context.CallSession
+                            .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
+                            .Sum(cs => cs.Calls);
+
+        }
+
 
 
         public void Add(CallSession callsession)

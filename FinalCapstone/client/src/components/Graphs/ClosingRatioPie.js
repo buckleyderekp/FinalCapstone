@@ -42,7 +42,7 @@ export const ClosingRatioPie = () => {
                 {
                     label: "Closing",
                     data: closingData,
-                    backgroundColor: ['#296098', "#982936"]
+                    backgroundColor: ["#598829", '#58287A']
                 }
             ]
         }

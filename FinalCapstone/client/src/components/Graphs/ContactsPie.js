@@ -42,7 +42,7 @@ import { AppointmentSessionContext } from "../providers/AppointmentSessionProvid
                 {
                     label: "Contacts",
                     data: contactData,
-                    backgroundColor: ['#296098', "#982936"]
+                    backgroundColor: ['#BD6F08', "#982936"]
                 }
             ]
         }

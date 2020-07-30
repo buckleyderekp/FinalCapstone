@@ -7,6 +7,8 @@ import { ContactsPie } from "./Graphs/ContactsPie";
 import { CallsComparisonLine } from "./Graphs/CallsComparisonLine";
 import { PresentationPie } from "./Graphs/PresentationRatioPie";
 import { ClosingRatioPie } from "./Graphs/ClosingRatioPie";
+import { ProductBreakdownPie } from "./Graphs/ProductBreakdownPie";
+import { CommissionBreakdownPie } from "./Graphs/CommissionBreakdownPie";
 
 export const Dashboard = () => {
     const { time, setTime } = useContext(AppointmentSessionContext)
@@ -29,8 +31,8 @@ export const Dashboard = () => {
                 <div className="gridrow2--2 chartcontainer2"><AppointmentRatioPie /></div>
                 <div className="gridrow2--3 chartcontainer2"><PresentationPie /></div>
                 <div className="gridrow2--4 chartcontainer2"><ClosingRatioPie/></div>
-                <div className="gridrow2--5 chartcontainer2"></div>
-                <div className="gridrow2--6 chartcontainer2"></div>
+                <div className="gridrow2--5 chartcontainer2"><ProductBreakdownPie/></div>
+                <div className="gridrow2--6 chartcontainer2"><CommissionBreakdownPie/></div>
             </div>
         </>
 

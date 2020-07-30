@@ -19,14 +19,17 @@ export default function Header() {
     return (
         <div>
             <Navbar color="dark" dark expand="md">
-                <NavbarBrand tag={RRNavLink} to="/">My App</NavbarBrand>
+                <NavbarBrand >My App</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         {isLoggedIn &&
                             <>
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/add">Dashboard</NavLink>
+                                    <NavLink tag={RRNavLink} to="/">Dashboard</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/activitylog">Activity Log</NavLink>
                                 </NavItem>
 
                             </>

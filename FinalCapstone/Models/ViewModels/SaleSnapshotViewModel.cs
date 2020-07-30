@@ -8,17 +8,17 @@ namespace FinalCapstone.Models.ViewModels
     public class SaleSnapshotViewModel
     {
 
-        public int Commission { get; set; }
+        public decimal Commission { get; set; }
 
-        public int Calls { get; set; }
+        public decimal Calls { get; set; }
 
-        public int Appointments { get; set; }
+        public decimal Appointments { get; set; }
 
-        public int Presentations { get; set; }
+        public decimal Presentations { get; set; }
 
-        public int Contacts { get; set; }
+        public decimal Contacts { get; set; }
 
-        public int Closes { get; set; }
+        public decimal Closes { get; set; }
 
     }
 }

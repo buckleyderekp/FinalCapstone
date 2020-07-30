@@ -9,6 +9,7 @@ import { PresentationPie } from "./Graphs/PresentationRatioPie";
 import { ClosingRatioPie } from "./Graphs/ClosingRatioPie";
 import { ProductBreakdownPie } from "./Graphs/ProductBreakdownPie";
 import { CommissionBreakdownPie } from "./Graphs/CommissionBreakdownPie";
+import { SaleSnapshot } from "./displays/SaleSnapshot";
 
 export const Dashboard = () => {
     const { time, setTime } = useContext(AppointmentSessionContext)
@@ -24,7 +25,7 @@ export const Dashboard = () => {
             </div>
             <div className="gridrow1">
                 <div className="gridrow1--1 chartcontainer1"><CallsComparisonLine /></div>
-                <div className="gridrow1--2 chartcontainer1"></div>
+                <div className="gridrow1--2 chartcontainer1"><SaleSnapshot/></div>
             </div>
             <div className="gridrow2">
                 <div className="gridrow2--1 chartcontainer2"><ContactsPie /></div>

@@ -10,6 +10,7 @@ export const SaleProvider = (props) => {
     const [closingRatio, setClosingRatio] = useState([]);
     const [salesByProduct, setSalesByProduct] = useState([]);
     const [commissionByProduct, setCommissionByProduct] = useState([]);
+    const [snapshot, setSnapshot] = useState([]);
 
     const apiUrl = "/api/sale";
     const { getToken } = useContext(UserProfileContext);
@@ -66,6 +67,20 @@ export const SaleProvider = (props) => {
                     setCommissionByProduct(res)
                     return res
                 }));
+
+    const getSaleSnapshot = (id, days) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/${id}/salesnapshot/?days=${days}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json())
+                .then((res) => {
+                    setSnapshot(res)
+                    return res
+                }));
+
 
 
     const addSale = (sale) =>
@@ -153,7 +168,10 @@ export const SaleProvider = (props) => {
             setSalesByProduct,
             commissionByProduct,
             setCommissionByProduct,
-            getCommissionByProduct
+            getCommissionByProduct,
+            getSaleSnapshot,
+            snapshot,
+            setSnapshot
         }}>
             {props.children}
         </SaleContext.Provider>

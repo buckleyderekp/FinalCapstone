@@ -18,10 +18,12 @@ namespace FinalCapstone.Controllers
 
         private readonly SaleRepository _saleRepo;
         private readonly AppointmentSessionRepository _appointmentSessionRepo;
+        private readonly CallSessionRepository _callSessionRepo;
         public SaleController(ApplicationDBContext context)
         {
             _saleRepo = new SaleRepository(context);
             _appointmentSessionRepo = new AppointmentSessionRepository(context);
+            _callSessionRepo = new CallSessionRepository(context);
         }
 
         [HttpGet("{id}")]
@@ -71,6 +73,38 @@ namespace FinalCapstone.Controllers
                 Sales = sales
             };
             return Ok(closingRatioView);
+        }
+
+        [HttpGet("{id}/salesnapshot")]
+        public IActionResult GetSalesSnapShot(int id, int days)
+        {
+
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var sales = _saleRepo.GetSalesTotal(id, startdate);
+            var closes = _saleRepo.GetClosesTotal(id, startdate);
+            var commission = _saleRepo.GetCommissionTotal(id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
+            var calls = _callSessionRepo.GetCallsTotal(id, startdate);
+            var contacts = _callSessionRepo.GetContactsTotal(id, startdate);
+            var appointments = _callSessionRepo.GetAppointmentBookedTotal(id, startdate);
+
+            var appointmentsPerSale = Decimal.Divide(appointments, sales);
+            var contactsPerSale = Decimal.Divide(contacts, sales);
+            var callsPerSale = Decimal.Divide(calls, sales);
+            var presentationsPerSale = Decimal.Divide(presentations, sales);
+            var commissionPerSale = Decimal.Divide(commission, sales);
+            var closesPerSale = Decimal.Divide(closes, sales);
+
+            var salesSnapshotView = new SaleSnapshotViewModel()
+            {
+                Presentations = Decimal.Round(presentationsPerSale),
+                Commission = Decimal.Round(commissionPerSale),
+                Calls = Decimal.Round(callsPerSale),
+                Contacts = Decimal.Round(contactsPerSale),
+                Appointments = Decimal.Round(appointmentsPerSale),
+                Closes = Decimal.Round(closesPerSale)
+            };
+            return Ok(salesSnapshotView);
         }
 
         [HttpPost]

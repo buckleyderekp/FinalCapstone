@@ -6,36 +6,44 @@ import { CallSessionContext } from "./providers/CallSessionProvider";
 import { CallLog } from "./displays/CallLog";
 import { AppointmentSessionContext } from "./providers/AppointmentSessionProvider";
 import { AppointmentLog } from "./displays/AppointmentLog";
+import { SaleContext } from "./providers/SaleProvider";
+import { SaleLog } from "./displays/SalesLog";
 
 
 export const AcitivyLog = () => {
 
+    const { getTimeSales, sales } = useContext(SaleContext)
     const { getTimeCallSessions, callSessions } = useContext(CallSessionContext)
     const { time, setTime, getTimeAppointmentSessions, appointmentSessions } = useContext(AppointmentSessionContext)
 
     useEffect(() => {
         getTimeCallSessions(1, 7)
         getTimeAppointmentSessions(1, 7)
+        getTimeSales(1, 7)
     }, []);
     useEffect(() => {
         if (time === "sevendays") {
             getTimeCallSessions(1, 7)
             getTimeAppointmentSessions(1, 7)
+            getTimeSales(1, 7)
 
         }
         else if (time === "thirtydays") {
             getTimeCallSessions(1, 30)
             getTimeAppointmentSessions(1, 30)
+            getTimeSales(1, 30)
 
         }
         else if (time === "ninetydays") {
             getTimeCallSessions(1, 90)
             getTimeAppointmentSessions(1, 90)
+            getTimeSales(1, 90)
 
         }
         else if (time === "oneyear") {
             getTimeCallSessions(1, 365)
             getTimeAppointmentSessions(1, 365)
+            getTimeSales(1, 365)
 
         }
     }, [time])
@@ -93,17 +101,16 @@ export const AcitivyLog = () => {
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Call Goal</th>
-                            <th>Calls</th>
-                            <th>Contacts</th>
-                            <th>Appointments</th>
+                            <th>Product</th>
+                            <th># of Closes</th>
+                            <th>Commission</th>
                             <th>Edit/Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {callSessions.slice().reverse().map(tcs => {
+                        {sales.slice().reverse().map(s => {
 
-                            return <CallLog callSession={tcs} />
+                            return <SaleLog sale={s} />
 
                         })}
                     </tbody>

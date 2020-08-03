@@ -5,30 +5,15 @@ import { AppointmentSessionContext } from "../providers/AppointmentSessionProvid
 
 export const ProductBreakdownPie = () => {
 
-    const { setSalesByProduct, salesByProduct, getSalesByProduct } = useContext(SaleContext)
+    const { salesByProduct, getSalesByProduct } = useContext(SaleContext)
     const { time } = useContext(AppointmentSessionContext)
 
 
-    useEffect(() => {
-        getSalesByProduct(1, 7)
-    }, []);
-
 
 
     useEffect(() => {
-        if (time === "sevendays") {
-            getSalesByProduct(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getSalesByProduct(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getSalesByProduct(1, 90)
-        }
-        else if (time === "oneyear") {
-            getSalesByProduct(1, 365)
-        }
-    }, [time])
+        getSalesByProduct(time)
+    }, [time]);
 
 
     let objectThing = {}
@@ -69,9 +54,9 @@ export const ProductBreakdownPie = () => {
     }
 
     if (!salesByProduct.length) {
-        return  (
+        return (
             <>
-            <div>No Data To Display</div>
+                <div>No Data To Display</div>
             </>
         )
     }

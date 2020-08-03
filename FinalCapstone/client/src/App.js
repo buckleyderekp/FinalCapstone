@@ -21,14 +21,14 @@ function App() {
   return (
     <Router>
       <UserProfileProvider>
-        <CallSessionProvider>
-          <AppointmentSessionProvider>
+        <AppointmentSessionProvider>
+          <CallSessionProvider>
             <SaleProvider>
               <Header />
               <ApplicationViews />
             </SaleProvider>
-          </AppointmentSessionProvider>
-        </CallSessionProvider>
+          </CallSessionProvider>
+        </AppointmentSessionProvider>
       </UserProfileProvider>
     </Router>
   );

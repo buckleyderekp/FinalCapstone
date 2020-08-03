@@ -1,5 +1,6 @@
 ﻿using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,21 @@ namespace FinalCapstone.Repositories
                             .Where(cs => cs.UserProfileId == id)
                             .Where(cs => cs.Date >= startdate)
                             .OrderBy(cs => cs.Date) 
+                            .ToList();
+        }
+
+        public List<CallComparisonViewModel> GetCallComparisonByUserId(int id, DateTime startdate)
+        {
+            return _context.CallSession
+                            .Where(cs => cs.UserProfileId == id)
+                            .Where(cs => cs.Date >= startdate)
+                            .OrderBy(cs => cs.Date)
+                            .Select(cs => new CallComparisonViewModel()
+                            {
+                                Date = cs.Date,
+                                Calls = cs.Calls,
+                                CallGoal = cs.CallGoal
+                            })
                             .ToList();
         }
 

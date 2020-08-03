@@ -24,6 +24,7 @@ namespace FinalCapstone.Repositories
             return _context.Sales
                             .Where(s => s.UserProfileId == id)
                             .Where(s => s.Date >= startdate)
+                            .Include(s => s.Product )
                             .OrderByDescending(s => s.Date)
                             .ToList();
         }

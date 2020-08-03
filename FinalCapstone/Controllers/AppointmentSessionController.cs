@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
@@ -17,18 +18,20 @@ namespace FinalCapstone.Controllers
     {
         private readonly AppointmentSessionRepository _appointmentSessionRepo;
         private readonly CallSessionRepository _callSessionRepo;
+        private readonly UserProfileRepository _userProfileRepo;
         public AppointmentSessionController(ApplicationDBContext context)
         {
             _appointmentSessionRepo = new AppointmentSessionRepository(context);
             _callSessionRepo = new CallSessionRepository(context);
+            _userProfileRepo = new UserProfileRepository(context);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id, int days)
+        [HttpGet]
+        public IActionResult Get(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var appointmentSessions = _appointmentSessionRepo.GetByUserId(id, startdate);
+            var appointmentSessions = _appointmentSessionRepo.GetByUserId(currentUser.Id, startdate);
             if (appointmentSessions == null)
             {
                 return NotFound();
@@ -36,15 +39,13 @@ namespace FinalCapstone.Controllers
             return Ok(appointmentSessions);
         }
 
-        [HttpGet("{id}/appointmentratio")]
-        public IActionResult GetAppointmentRatio(int id, int days)
+        [HttpGet("appointmentratio")]
+        public IActionResult GetAppointmentRatio(int days)
         {
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(id, startdate);
-            var appointmentsBooked = _callSessionRepo.GetAppointmentBookedTotal(id, startdate);
-
-
-
+            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(currentUser.Id, startdate);
+            var appointmentsBooked = _callSessionRepo.GetAppointmentBookedTotal(currentUser.Id, startdate);
             var appointmentRatioView = new AppointmentRatioViewModel()
             {
                 AppointmentsKept = appointmentsKept,
@@ -54,15 +55,13 @@ namespace FinalCapstone.Controllers
 
         }
 
-        [HttpGet("{id}/presentationratio")]
-        public IActionResult GetPresentationRatio(int id, int days)
+        [HttpGet("presentationratio")]
+        public IActionResult GetPresentationRatio(int days)
         {
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(id, startdate);
-            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
-
-
-
+            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(currentUser.Id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(currentUser.Id, startdate);
             var presentationsRatioView = new PresentationsRatioViewModel()
             {
                 AppointmentsKept = appointmentsKept,
@@ -73,29 +72,57 @@ namespace FinalCapstone.Controllers
         }
 
         [HttpPost]
-        public IActionResult CallSession(AppointmentSession appointmentsession)
+        public IActionResult AppointmentSession(AppointmentSession appointmentsession)
         {
+            var currentUser = GetCurrentUserProfile();
+            if(currentUser.Id == appointmentsession.UserProfileId)
+            {
             _appointmentSessionRepo.Add(appointmentsession);
             return CreatedAtAction("Get", new { id = appointmentsession.Id }, appointmentsession);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, AppointmentSession appointmentsession)
-        {
-            if (id != appointmentsession.Id)
+            }
+            else
             {
                 return BadRequest();
             }
+        }
 
-            _appointmentSessionRepo.Update(appointmentsession);
-            return NoContent();
+        [HttpPut]
+        public IActionResult Put(AppointmentSession appointmentsession)
+        {
+
+            var currentUser = GetCurrentUserProfile();
+            if (currentUser.Id == appointmentsession.UserProfileId)
+            {
+                _appointmentSessionRepo.Update(appointmentsession);
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _appointmentSessionRepo.Delete(id);
-            return NoContent();
+
+            var appointmentSession = _appointmentSessionRepo.GetById(id);
+            var currentUser = GetCurrentUserProfile();
+            if (appointmentSession.UserProfileId == currentUser.Id)
+            {
+                _appointmentSessionRepo.Delete(id);
+                return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepo.GetByFirebaseId(firebaseUserId);
         }
     }
 }

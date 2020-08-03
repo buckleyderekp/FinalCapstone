@@ -8,24 +8,13 @@ export const PresentationPie = () => {
 
     const { time, getPresentationRatio, presentationRatio } = useContext(AppointmentSessionContext)
 
-    useEffect(() => {
-        getPresentationRatio(1, 7)
-    }, []);
+
+
 
     useEffect(() => {
-        if (time === "sevendays") {
-            getPresentationRatio(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getPresentationRatio(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getPresentationRatio(1, 90)
-        }
-        else if (time === "oneyear") {
-            getPresentationRatio(1, 365)
-        }
-    }, [time])
+        getPresentationRatio(time)
+    }, [time]);
+
 
     const data = {
         percentagePresented: Math.round((presentationRatio.presentations) / presentationRatio.appointmentsKept * 100),

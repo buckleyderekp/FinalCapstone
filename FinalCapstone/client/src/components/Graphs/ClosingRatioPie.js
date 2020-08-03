@@ -8,25 +8,13 @@ export const ClosingRatioPie = () => {
 
     const { getClosingRatio, closingRatio } = useContext(SaleContext)
     const { time } = useContext(AppointmentSessionContext)
+ 
+
 
     useEffect(() => {
-        getClosingRatio(1, 7)
-    }, []);
+        getClosingRatio(time)
+    }, [time]);
 
-    useEffect(() => {
-        if (time === "sevendays") {
-            getClosingRatio(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getClosingRatio(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getClosingRatio(1, 90)
-        }
-        else if (time === "oneyear") {
-            getClosingRatio(1, 365)
-        }
-    }, [time])
 
     const data = {
         percentageClosed: Math.round((closingRatio.sales) / closingRatio.presentations * 100),

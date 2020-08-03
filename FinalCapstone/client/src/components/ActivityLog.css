@@ -39,6 +39,9 @@
 #override .red {
     background-color: #982936;
 }
+#override #deleteEntryModal {
+    background-color: #982936;
+}
 
 td {
 

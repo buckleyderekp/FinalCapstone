@@ -27,7 +27,7 @@ export default function ApplicationViews() {
                 </Route>
 
                 <Route path="/activitylog">
-                    <AcitivyLog />
+                    {isLoggedIn ? <AcitivyLog /> : <Redirect to="/login" />}
                 </Route>
 
             </Switch>

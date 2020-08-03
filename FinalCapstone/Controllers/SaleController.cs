@@ -114,15 +114,10 @@ namespace FinalCapstone.Controllers
         public IActionResult Sale(Sale sale)
         {
             var currentUser = GetCurrentUserProfile();
-            if (currentUser.Id == sale.UserProfileId)
-            {
-                _saleRepo.Add(sale);
+            sale.UserProfileId = currentUser.Id;
+            _saleRepo.Add(sale);
                 return CreatedAtAction("Get", new { id = sale.Id }, sale);
-            }
-            else
-            {
-                return Unauthorized();
-            }
+ 
         }
 
         [HttpPut]

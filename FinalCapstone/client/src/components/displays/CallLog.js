@@ -6,7 +6,7 @@ import { EditCallSessionForm } from "../forms/EditCallSessionForm";
 
 export const CallLog = ({ callSession }) => {
 
-    const { deleteCallSessionById } = useContext(CallSessionContext)
+    const { deleteCallSessionById, editCallSession } = useContext(CallSessionContext)
     let momentDate = moment(callSession.date);
     let formattedDate = momentDate.utc().format("MM/DD/YYYY");
     const [modal, setModal] = useState(false);
@@ -14,17 +14,29 @@ export const CallLog = ({ callSession }) => {
     const [editModal, setEditModal] = useState(false);
     const editToggle = () => setEditModal(!editModal);
 
+
     const deleteEntry = () => {
         deleteCallSessionById(callSession.id).then(toggle)
     }
 
-    const [userInput, setUserInput] = useState(null);
-    const handleUserInput = (e) => {
-
-        const updatedState = { ...userInput }
+    const [userEdit, setUserEdit] = useState(null);
+    const handleUserEdit = (e) => {
+        const updatedState = { ...userEdit }
         updatedState[e.target.id] = e.target.value
-        setUserInput(updatedState);
+        setUserEdit(updatedState);
     };
+
+    const editSubmit = () => {
+        if (userEdit != callSession) {
+            editCallSession(userEdit).then(editToggle)
+        }
+        else {
+            editToggle()
+        }
+    }
+
+
+
 
     return (
         <>
@@ -35,7 +47,11 @@ export const CallLog = ({ callSession }) => {
                 <td>{callSession.calls}</td>
                 <td>{callSession.contacts}</td>
                 <td>{callSession.appointmentsBooked}</td>
-                <td><Button className="blue" onClick={editToggle}>Edit</Button> <Button className="red" onClick={toggle}>Delete</Button></td>
+                <td><Button className="blue" onClick={() => {
+                    editToggle()
+                    setUserEdit(callSession)
+                }}
+                >Edit</Button> <Button className="red" onClick={toggle}>Delete</Button></td>
             </tr>
 
             <div>
@@ -52,10 +68,10 @@ export const CallLog = ({ callSession }) => {
                 <Modal isOpen={editModal} editToggle={editToggle} >
                     <ModalHeader editToggle={editToggle}>{formattedDate}</ModalHeader>
                     <ModalBody>
-                        <EditCallSessionForm callSession={callSession} handleUserInput={handleUserInput} />
+                        <EditCallSessionForm callSession={callSession} handleUserEdit={handleUserEdit} />
                     </ModalBody>
                     <ModalFooter>
-                        <Button className="red" >Submit</Button>
+                        <Button className="red" onClick={editSubmit}>Submit</Button>
                         <Button className="blue" onClick={editToggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

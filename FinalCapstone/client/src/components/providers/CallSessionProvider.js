@@ -121,7 +121,8 @@ export const CallSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }))
+            }).then(() => getTimeCallSessions(time))
+        )
     };
 
 

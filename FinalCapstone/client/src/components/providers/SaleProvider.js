@@ -2,6 +2,7 @@
 import React, { useState, useContext } from "react";
 import { UserProfileContext } from "./UserProfileProvider"
 import "firebase/auth";
+import { AppointmentSessionContext } from "./AppointmentSessionProvider";
 
 export const SaleContext = React.createContext();
 
@@ -11,6 +12,7 @@ export const SaleProvider = (props) => {
     const [salesByProduct, setSalesByProduct] = useState([]);
     const [commissionByProduct, setCommissionByProduct] = useState([]);
     const [snapshot, setSnapshot] = useState([]);
+    const { time } = useContext(AppointmentSessionContext)
 
     const apiUrl = "/api/sale";
     const { getToken } = useContext(UserProfileContext);
@@ -97,7 +99,7 @@ export const SaleProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            }));
+            }).then(() => getTimeSales(time)));
 
 
     const getSale = (id) => {
@@ -129,8 +131,7 @@ export const SaleProvider = (props) => {
                     return;
                 }
                 throw new Error("Failed to delete session.")
-            })
-        );
+            })).then(() => getTimeSales(time))
     };
 
     const editSale = (sale) => {
@@ -147,7 +148,7 @@ export const SaleProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }));
+            })).then(() => getTimeSales(time));
     };
 
 

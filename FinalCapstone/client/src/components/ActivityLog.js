@@ -15,9 +15,9 @@ import { AddSaleForm } from "./forms/AddSaleForm";
 
 export const AcitivyLog = () => {
 
-    const { getTimeSales, sales } = useContext(SaleContext)
+    const { getTimeSales, sales, addSale } = useContext(SaleContext)
     const { getTimeCallSessions, callSessions, addCallSession } = useContext(CallSessionContext)
-    const { time, setTime, getTimeAppointmentSessions, appointmentSessions } = useContext(AppointmentSessionContext)
+    const { time, setTime, getTimeAppointmentSessions, appointmentSessions, addAppointmentSession } = useContext(AppointmentSessionContext)
     const [callSessionModal, setCallSessionModal] = useState(false);
     const addCallSessionToggle = () => setCallSessionModal(!callSessionModal);
     const [appointmentSessionModal, setAppointmentSessionModal] = useState(false);
@@ -25,8 +25,8 @@ export const AcitivyLog = () => {
     const [saleModal, setSaleModal] = useState(false);
     const addSaleToggle = () => setSaleModal(!saleModal);
     const [userInput, setUserInput] = useState(null);
-    const handleUserInput = (e) => {
 
+    const handleUserInput = (e) => {
         const updatedState = { ...userInput }
         updatedState[e.target.id] = e.target.value
         setUserInput(updatedState);
@@ -35,12 +35,13 @@ export const AcitivyLog = () => {
     const addNewCallSession = () => {
         addCallSession(userInput).then(() => addCallSessionToggle())
     }
+    const addNewAppointmentSession = () => {
+        addAppointmentSession(userInput).then(() => addAppointmentSessionToggle())
+    }
+    const addNewSale = () => {
+        addSale(userInput).then(() => addSaleToggle())
+    }
 
-    useEffect(() => {
-        getTimeCallSessions(time)
-        getTimeAppointmentSessions(time)
-        getTimeSales(time)
-    }, []);
 
     useEffect(() => {
         getTimeCallSessions(time)
@@ -92,7 +93,7 @@ export const AcitivyLog = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {appointmentSessions.slice().reverse().map(as => {
+                        {appointmentSessions.map(as => {
 
                             return <AppointmentLog appointmentSession={as} />
 
@@ -112,7 +113,7 @@ export const AcitivyLog = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sales.slice().reverse().map(s => {
+                        {sales.map(s => {
 
                             return <SaleLog sale={s} />
 
@@ -138,7 +139,7 @@ export const AcitivyLog = () => {
                         <ModalHeader toggle={addAppointmentSessionToggle}>Add Appointment Session</ModalHeader>
                         <AddAppointmentSessionForm handleUserInput={handleUserInput} />
                         <ModalFooter>
-                            <Button className="red">Delete</Button>
+                            <Button className="red" onClick={addNewAppointmentSession}>Submit</Button>
                             <Button className="blue" onClick={addAppointmentSessionToggle}>Cancel</Button>
                         </ModalFooter>
                     </ModalBody>
@@ -150,7 +151,7 @@ export const AcitivyLog = () => {
                         <ModalHeader toggle={addSaleToggle}>Add Sale</ModalHeader>
                         <AddSaleForm handleUserInput={handleUserInput} />
                         <ModalFooter>
-                            <Button className="red">Delete</Button>
+                            <Button className="red" onClick={addNewSale}>Submit</Button>
                             <Button className="blue" onClick={addSaleToggle}>Cancel</Button>
                         </ModalFooter>
                     </ModalBody>

@@ -2,7 +2,7 @@ import React from "react";
 import { FormGroup, Label, Input } from 'reactstrap';
 
 
-export const AddAppointmentSessionForm = ({ handleUserInput }) => {
+export const EditAppointmentSessionForm = ({ handleUserEdit, appointmentSession }) => {
 
 
     return (
@@ -12,16 +12,16 @@ export const AddAppointmentSessionForm = ({ handleUserInput }) => {
 
                 <FormGroup>
                     <Label for="appointmentsKept">Appointments Kept</Label>
-                    <Input onChange={handleUserInput} type="text" name="text" id="appointmentsKept" required />
+                    <Input onChange={handleUserEdit} type="text" name="text" id="appointmentsKept" required defaultValue={appointmentSession.appointmentsKept} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="presentations">Presentations</Label>
-                    <Input onChange={handleUserInput} type="text" name="text" id="presentations" required />
+                    <Input onChange={handleUserEdit} type="text" name="text" id="presentations" required defaultValue={appointmentSession.presentations} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="Date">Date</Label>
                     <Input
-                        onChange={handleUserInput}
+                        onChange={handleUserEdit}
                         type="date"
                         name="date"
                         id="date"

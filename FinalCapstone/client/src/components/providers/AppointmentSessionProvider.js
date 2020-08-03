@@ -69,7 +69,7 @@ export const AppointmentSessionProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            }));
+            })).then(() => getTimeAppointmentSessions(time));
 
 
     const getAppointmentSession = (id) => {
@@ -116,7 +116,7 @@ export const AppointmentSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Failed to delete session.")
-            })
+            }).then(() => getTimeAppointmentSessions(time))
         );
     };
 
@@ -134,7 +134,8 @@ export const AppointmentSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }))
+            }).then(() => getTimeAppointmentSessions(time))
+        )
     };
 
 

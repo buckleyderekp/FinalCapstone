@@ -74,16 +74,13 @@ namespace FinalCapstone.Controllers
         [HttpPost]
         public IActionResult AppointmentSession(AppointmentSession appointmentsession)
         {
+
             var currentUser = GetCurrentUserProfile();
-            if(currentUser.Id == appointmentsession.UserProfileId)
-            {
+            appointmentsession.UserProfileId = currentUser.Id;
             _appointmentSessionRepo.Add(appointmentsession);
+
             return CreatedAtAction("Get", new { id = appointmentsession.Id }, appointmentsession);
-            }
-            else
-            {
-                return BadRequest();
-            }
+
         }
 
         [HttpPut]
@@ -91,15 +88,10 @@ namespace FinalCapstone.Controllers
         {
 
             var currentUser = GetCurrentUserProfile();
-            if (currentUser.Id == appointmentsession.UserProfileId)
-            {
-                _appointmentSessionRepo.Update(appointmentsession);
+            appointmentsession.UserProfileId = currentUser.Id;
+            _appointmentSessionRepo.Update(appointmentsession);
                 return NoContent();
-            }
-            else
-            {
-                return BadRequest();
-            }
+
         }
 
         [HttpDelete("{id}")]

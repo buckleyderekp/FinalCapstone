@@ -3,9 +3,10 @@ import { FormGroup, Label, Input, Col } from 'reactstrap';
 import { ProductContext } from "../providers/ProductProvider";
 
 
-export const AddSaleForm = ({ handleUserInput }) => {
+export const EditSaleForm = ({ handleUserEdit, sale }) => {
 
     const { products, getProducts } = useContext(ProductContext)
+
 
     useEffect(() => {
         getProducts()
@@ -18,7 +19,7 @@ export const AddSaleForm = ({ handleUserInput }) => {
 
                 <FormGroup>
                     <Label for="product">Select</Label>
-                    <Input onChange={handleUserInput} type="select" name="select" id="ProductId">
+                    <Input defaultValue={sale.productId} onChange={handleUserEdit} type="select" name="select" id="productId">
                         <option key="0" value="0">Please Select Product</option>
                         {products.map(p => {
                             return <option key={p.id} value={p.id}>{p.productName}</option>
@@ -28,19 +29,19 @@ export const AddSaleForm = ({ handleUserInput }) => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="commission">Commission</Label>
-                    <Input onChange={handleUserInput} type="text" name="text" id="Commission" required />
+                    <Input defaultValue={sale.commission} onChange={handleUserEdit} type="text" name="text" id="commission" required />
                 </FormGroup>
                 <FormGroup>
                     <Label for="closes">Number of Closing Attempts</Label>
-                    <Input onChange={handleUserInput} type="text" name="text" id="Closes" required />
+                    <Input defaultValue={sale.closes} onChange={handleUserEdit} type="text" name="text" id="closes" required />
                 </FormGroup>
                 <FormGroup>
                     <Label for="date">Date</Label>
                     <Input
-                        onChange={handleUserInput}
+                        onChange={handleUserEdit}
                         type="date"
                         name="date"
-                        id="Date"
+                        id="date"
                         placeholder="date placeholder"
                         required
                     />

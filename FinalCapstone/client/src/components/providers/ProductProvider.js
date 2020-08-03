@@ -8,13 +8,13 @@ export const ProductProvider = (props) => {
     const [products, setProducts] = useState([]);
 
 
-    const apiUrl = "/api/products";
+    const apiUrl = "/api/product";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getProducts = (id, days) =>
+    const getProducts = () =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/?days=${days}`, {
+            fetch(apiUrl, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`

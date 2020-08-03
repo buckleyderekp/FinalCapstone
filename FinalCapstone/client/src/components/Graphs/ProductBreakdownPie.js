@@ -53,26 +53,18 @@ export const ProductBreakdownPie = () => {
         }
     }
 
-    if (!salesByProduct.length) {
-        return (
-            <>
-                <div>No Data To Display</div>
-            </>
-        )
-    }
-    else {
-        return (
-            <Pie
-                data={contactAppointmentState.data}
-                options={{
-                    maintainAspectRatio: false,
-                    title: {
-                        display: true,
-                        text: "Sales By Product",
-                        fontSize: 19,
-                    }
-                }}>
-            </Pie>
-        )
-    }
+
+    return (
+        <Pie
+            data={contactAppointmentState.data}
+            options={{
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: "Sales By Product",
+                    fontSize: 19,
+                }
+            }}>
+        </Pie>
+    )
 }

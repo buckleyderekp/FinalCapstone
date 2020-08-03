@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
+using FinalCapstone.Models.ViewModels;
 using FinalCapstone.Repositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalCapstone.Controllers
@@ -15,10 +17,12 @@ namespace FinalCapstone.Controllers
     public class UserProfileController : ControllerBase
     {
             private readonly UserProfileRepository _userRepo;
-            public UserProfileController(ApplicationDBContext context)
+            private readonly OrganizationRepository _organizationRepo;
+        public UserProfileController(ApplicationDBContext context)
             {
                 _userRepo = new UserProfileRepository(context);
-            }
+                _organizationRepo = new OrganizationRepository(context);
+        }
 
             //[HttpGet("{id}")]
             //public IActionResult Get(int id)
@@ -32,10 +36,23 @@ namespace FinalCapstone.Controllers
             //}
 
             [HttpPost]
-            public IActionResult Post(UserProfile user)
+            public IActionResult Post(RegisterViewModel registerview)
             {
+
+            var userTypeUser = 2;
+            var organization = _organizationRepo.GetByOrganizationUID(registerview.OrganizationCode);
+                var user = new UserProfile()
+                {
+                    Name = registerview.Name,
+                    OrganizationId = organization.Id,
+                    Email = registerview.Email,
+                    FirebaseUserId = registerview.FirebaseUserId,
+                    UserTypeId = userTypeUser
+                };
+     
                 _userRepo.Add(user);
-                return CreatedAtAction("Get", new { id = user.Id }, user);
+
+                return CreatedAtAction("Get", new { FirebaseId = user.FirebaseUserId }, user);
             }
 
             [HttpPut("{id}")]

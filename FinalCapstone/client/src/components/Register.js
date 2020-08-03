@@ -11,13 +11,14 @@ export default function Register() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
+    const [organizationCode, setOrganizationCode] = useState();
 
     const registerClick = (e) => {
         e.preventDefault();
         if (password && password !== confirmPassword) {
             alert("Passwords don't match. Do better.");
         } else {
-            const userProfile = { name, email };
+            const userProfile = { name, email, organizationCode };
             register(userProfile, password)
                 .then(() => history.push("/"));
         }
@@ -33,6 +34,10 @@ export default function Register() {
                 <FormGroup>
                     <Label for="email">Email</Label>
                     <Input id="email" type="text" onChange={e => setEmail(e.target.value)} />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="email">Organization Code</Label>
+                    <Input id="email" type="text" onChange={e => setOrganizationCode(e.target.value)} />
                 </FormGroup>
                 <FormGroup>
                     <Label for="password">Password</Label>

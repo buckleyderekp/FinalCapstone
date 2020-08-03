@@ -56,7 +56,7 @@ export const CallSessionProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            }));
+            })).then(() => getTimeCallSessions(time));
 
 
     const getSession = (id) => {

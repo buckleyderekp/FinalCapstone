@@ -91,12 +91,12 @@ namespace FinalCapstone.Controllers
             var contacts = _callSessionRepo.GetContactsTotal(currentUser.Id, startdate);
             var appointments = _callSessionRepo.GetAppointmentBookedTotal(currentUser.Id, startdate);
 
-            var appointmentsPerSale = Decimal.Divide(appointments, sales);
-            var contactsPerSale = Decimal.Divide(contacts, sales);
-            var callsPerSale = Decimal.Divide(calls, sales);
-            var presentationsPerSale = Decimal.Divide(presentations, sales);
-            var commissionPerSale = Decimal.Divide(commission, sales);
-            var closesPerSale = Decimal.Divide(closes, sales);
+            var appointmentsPerSale = (sales == 0) ? 0 : Decimal.Divide(appointments, sales);
+            var contactsPerSale = (sales == 0) ? 0 : Decimal.Divide(contacts, sales);
+            var callsPerSale = (sales == 0) ? 0 : Decimal.Divide(calls, sales);
+            var presentationsPerSale = (sales == 0) ? 0 : Decimal.Divide(presentations, sales);
+            var commissionPerSale = (sales == 0) ? 0 : Decimal.Divide(commission, sales);
+            var closesPerSale = (sales == 0) ? 0 : Decimal.Divide(closes, sales);
 
             var salesSnapshotView = new SaleSnapshotViewModel()
             {

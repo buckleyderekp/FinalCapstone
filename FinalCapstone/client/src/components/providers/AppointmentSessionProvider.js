@@ -8,15 +8,15 @@ export const AppointmentSessionProvider = (props) => {
     const [appointmentSessions, setAppointmentSessions] = useState([]);
     const [appointmentRatio, setAppointmentRatio] = useState([]);
     const [presentationRatio, setPresentationRatio] = useState([]);
-    const [time, setTime] = useState("sevendays");
+    const [time, setTime] = useState(7);
 
     const apiUrl = "/api/appointmentsession";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getTimeAppointmentSessions = (id, days) =>
+    const getTimeAppointmentSessions = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/?days=${days}`, {
+            fetch(`${apiUrl}/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -27,9 +27,9 @@ export const AppointmentSessionProvider = (props) => {
                     return res
                 }));
 
-    const getAppointmentRatio = (id, days) =>
+    const getAppointmentRatio = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/appointmentratio/?days=${days}`, {
+            fetch(`${apiUrl}/appointmentratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -40,9 +40,9 @@ export const AppointmentSessionProvider = (props) => {
                     return res
                 }));
 
-    const getPresentationRatio = (id, days) =>
+    const getPresentationRatio = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/presentationratio/?days=${days}`, {
+            fetch(`${apiUrl}/presentationratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -69,9 +69,7 @@ export const AppointmentSessionProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            }));
-
-
+            })).then(() => getTimeAppointmentSessions(time));
 
 
     const getAppointmentSession = (id) => {
@@ -90,9 +88,9 @@ export const AppointmentSessionProvider = (props) => {
             }));
     }
 
-    const getUserAppointmentSessions = (id) => {
+    const getUserAppointmentSessions = () => {
         getToken().then((token) =>
-            fetch(apiUrl + `/getbyuser/${id}`, {
+            fetch(apiUrl + `/getbyuser`, {
                 method: "Get",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -118,13 +116,13 @@ export const AppointmentSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Failed to delete session.")
-            })
+            }).then(() => getTimeAppointmentSessions(time))
         );
     };
 
-    const editAppointmentSession = (id, appsession) => {
+    const editAppointmentSession = (appsession) => {
         return getToken().then((token) =>
-            fetch(apiUrl + `/${id}`, {
+            fetch(apiUrl, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -136,7 +134,8 @@ export const AppointmentSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }))
+            }).then(() => getTimeAppointmentSessions(time))
+        )
     };
 
 

@@ -2,20 +2,23 @@
 import React, { useState, useContext } from "react";
 import { UserProfileContext } from "./UserProfileProvider"
 import "firebase/auth";
+import { AppointmentSessionContext } from "./AppointmentSessionProvider";
 
 export const CallSessionContext = React.createContext();
 
 export const CallSessionProvider = (props) => {
     const [callSessions, setCallSessions] = useState([]);
     const [contactRatio, setContactRatio] = useState([]);
+    const [callLog, setCallLog] = useState([]);
+    const { time } = useContext(AppointmentSessionContext)
 
     const apiUrl = "/api/callsession";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getTimeCallSessions = (id, days) =>
+    const getTimeCallSessions = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/?days=${days}`, {
+            fetch(`${apiUrl}/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -26,9 +29,9 @@ export const CallSessionProvider = (props) => {
                     return res
                 }));
 
-    const getContactRatio = (id, days) =>
+    const getContactRatio = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/contactratio/?days=${days}`, {
+            fetch(`${apiUrl}/contactratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -56,8 +59,6 @@ export const CallSessionProvider = (props) => {
             }));
 
 
-
-
     const getSession = (id) => {
         return getToken().then((token) =>
             fetch(apiUrl + `/${id}`, {
@@ -72,11 +73,11 @@ export const CallSessionProvider = (props) => {
                 }
                 else { throw new Error("Unauthorized"); }
             }));
-    }
+    };
 
-    const getUserCallSessions = (id) => {
+    const getUserCallSessions = () => {
         getToken().then((token) =>
-            fetch(apiUrl + `/getbyuser/${id}`, {
+            fetch(apiUrl + '/getbyuser', {
                 method: "Get",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -84,7 +85,7 @@ export const CallSessionProvider = (props) => {
                 },
             }).then(resp => {
                 if (resp.ok) {
-                    return resp.json().then(setCallSessions);
+                    return resp.json().then(setCallLog);
                 }
                 throw new Error("Unauthorized");
             }))
@@ -102,13 +103,13 @@ export const CallSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Failed to delete session.")
-            })
+            }).then(() => getTimeCallSessions(time))
         );
     };
 
-    const editCallSession = (id, callsession) => {
+    const editCallSession = (callsession) => {
         return getToken().then((token) =>
-            fetch(apiUrl + `/${id}`, {
+            fetch(apiUrl, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -120,7 +121,8 @@ export const CallSessionProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }))
+            }).then(() => getTimeCallSessions(time))
+        )
     };
 
 

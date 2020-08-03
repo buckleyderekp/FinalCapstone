@@ -7,26 +7,13 @@ import { AppointmentSessionContext } from "../providers/AppointmentSessionProvid
 
     const { contactRatio, getContactRatio} = useContext(CallSessionContext)
     const {time } = useContext(AppointmentSessionContext)
+    
 
     
     useEffect(() => {
-        getContactRatio(1, 7)
-    }, []);
+        getContactRatio(time)
+    }, [time]);
     
-    useEffect(() => {
-        if (time === "sevendays") {
-            getContactRatio(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getContactRatio(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getContactRatio(1, 90)
-        }
-        else if (time === "oneyear") {
-            getContactRatio(1, 365)
-        }
-    }, [time])
     
     const data = {
         percentagebooked: Math.round((contactRatio.appointmentsBooked)/ contactRatio.contacts * 100),

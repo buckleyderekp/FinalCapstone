@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalCapstone.Data;
 using FinalCapstone.Models;
@@ -19,19 +20,21 @@ namespace FinalCapstone.Controllers
         private readonly SaleRepository _saleRepo;
         private readonly AppointmentSessionRepository _appointmentSessionRepo;
         private readonly CallSessionRepository _callSessionRepo;
+        private readonly UserProfileRepository _userProfileRepo;
         public SaleController(ApplicationDBContext context)
         {
             _saleRepo = new SaleRepository(context);
             _appointmentSessionRepo = new AppointmentSessionRepository(context);
             _callSessionRepo = new CallSessionRepository(context);
+            _userProfileRepo = new UserProfileRepository(context);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id, int days)
+        [HttpGet]
+        public IActionResult Get(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var sales = _saleRepo.GetByUserId(id, startdate);
+            var sales = _saleRepo.GetByUserId(currentUser.Id, startdate);
             if (sales == null)
             {
                 return NotFound();
@@ -39,33 +42,33 @@ namespace FinalCapstone.Controllers
             return Ok(sales);
         }
 
-        [HttpGet("{id}/salesbyproduct")]
-        public IActionResult GetSalesByProduct(int id, int days)
+        [HttpGet("salesbyproduct")]
+        public IActionResult GetSalesByProduct(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var salesByProduct = _saleRepo.GetSalesByProduct(id, startdate);
+            var salesByProduct = _saleRepo.GetSalesByProduct(currentUser.Id, startdate);
 
             return Ok(salesByProduct);
         }
 
-        [HttpGet("{id}/commissionbyproduct")]
-        public IActionResult GetCommissionByProduct(int id, int days)
+        [HttpGet("commissionbyproduct")]
+        public IActionResult GetCommissionByProduct(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var commissionByProduct = _saleRepo.GetCommissionByProduct(id, startdate);
+            var commissionByProduct = _saleRepo.GetCommissionByProduct(currentUser.Id, startdate);
 
             return Ok(commissionByProduct);
         }
 
-        [HttpGet("{id}/closingratio")]
-        public IActionResult GetClosingRatio(int id, int days)
+        [HttpGet("closingratio")]
+        public IActionResult GetClosingRatio(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var sales = _saleRepo.GetSalesTotal(id, startdate);
-            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
+            var sales = _saleRepo.GetSalesTotal(currentUser.Id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(currentUser.Id, startdate);
 
             var closingRatioView = new ClosingRatioViewModel()
             {
@@ -75,18 +78,18 @@ namespace FinalCapstone.Controllers
             return Ok(closingRatioView);
         }
 
-        [HttpGet("{id}/salesnapshot")]
-        public IActionResult GetSalesSnapShot(int id, int days)
+        [HttpGet("salesnapshot")]
+        public IActionResult GetSalesSnapShot(int days)
         {
-
+            var currentUser = GetCurrentUserProfile();
             var startdate = DateTime.Now - TimeSpan.FromDays(days);
-            var sales = _saleRepo.GetSalesTotal(id, startdate);
-            var closes = _saleRepo.GetClosesTotal(id, startdate);
-            var commission = _saleRepo.GetCommissionTotal(id, startdate);
-            var presentations = _appointmentSessionRepo.GetPresentationsTotal(id, startdate);
-            var calls = _callSessionRepo.GetCallsTotal(id, startdate);
-            var contacts = _callSessionRepo.GetContactsTotal(id, startdate);
-            var appointments = _callSessionRepo.GetAppointmentBookedTotal(id, startdate);
+            var sales = _saleRepo.GetSalesTotal(currentUser.Id, startdate);
+            var closes = _saleRepo.GetClosesTotal(currentUser.Id, startdate);
+            var commission = _saleRepo.GetCommissionTotal(currentUser.Id, startdate);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(currentUser.Id, startdate);
+            var calls = _callSessionRepo.GetCallsTotal(currentUser.Id, startdate);
+            var contacts = _callSessionRepo.GetContactsTotal(currentUser.Id, startdate);
+            var appointments = _callSessionRepo.GetAppointmentBookedTotal(currentUser.Id, startdate);
 
             var appointmentsPerSale = Decimal.Divide(appointments, sales);
             var contactsPerSale = Decimal.Divide(contacts, sales);
@@ -110,29 +113,51 @@ namespace FinalCapstone.Controllers
         [HttpPost]
         public IActionResult Sale(Sale sale)
         {
+            var currentUser = GetCurrentUserProfile();
+            sale.UserProfileId = currentUser.Id;
             _saleRepo.Add(sale);
-            return CreatedAtAction("Get", new { id = sale.Id }, sale);
+                return CreatedAtAction("Get", new { id = sale.Id }, sale);
+ 
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, Sale sale)
+        [HttpPut]
+        public IActionResult Put(Sale sale)
         {
-            if (id != sale.Id)
+            var currentUser = GetCurrentUserProfile();
+
+            if (currentUser.Id == sale.UserProfileId)
+            {
+                _saleRepo.Update(sale);
+                return NoContent();
+            }
+            else
             {
                 return BadRequest();
             }
-
-            _saleRepo.Update(sale);
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            var currentUser = GetCurrentUserProfile();
+            var sale = _saleRepo.GetById(id);
+
+            if (currentUser.Id == sale.UserProfileId)
+            {
             _saleRepo.Delete(id);
             return NoContent();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepo.GetByFirebaseId(firebaseUserId);
+        }
 
     }
 }

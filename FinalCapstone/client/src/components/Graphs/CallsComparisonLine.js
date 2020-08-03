@@ -11,23 +11,11 @@ export const CallsComparisonLine = () => {
     const [dates, setDates] = useState([])
     const [calls, setCalls] = useState([])
 
+
+
+
     useEffect(() => {
-        if (time === "sevendays") {
-            getTimeCallSessions(1, 7)
-
-        }
-        else if (time === "thirtydays") {
-            getTimeCallSessions(1, 30)
-
-        }
-        else if (time === "ninetydays") {
-            getTimeCallSessions(1, 90)
-
-        }
-        else if (time === "oneyear") {
-            getTimeCallSessions(1, 365)
-
-        }
+            getTimeCallSessions(time)
     }, [time])
 
 

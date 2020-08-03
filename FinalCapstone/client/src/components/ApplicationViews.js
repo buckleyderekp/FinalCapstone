@@ -12,7 +12,7 @@ export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
 
     return (
-        <main>
+        <main id="override">
             <Switch>
                 <Route path="/" exact>
                     {isLoggedIn ? <Dashboard /> : <Redirect to="/login" />}
@@ -27,7 +27,7 @@ export default function ApplicationViews() {
                 </Route>
 
                 <Route path="/activitylog">
-                    <AcitivyLog />
+                    {isLoggedIn ? <AcitivyLog /> : <Redirect to="/login" />}
                 </Route>
 
             </Switch>

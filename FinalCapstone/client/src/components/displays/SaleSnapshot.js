@@ -14,23 +14,14 @@ export const SaleSnapshot = () => {
 
 
     useEffect(() => {
-        getSaleSnapshot(1, 7)
+        getSaleSnapshot(time)
     }, []);
 
     useEffect(() => {
-        if (time === "sevendays") {
-            getSaleSnapshot(1, 7)
-        }
-        else if (time === "thirtydays") {
-            getSaleSnapshot(1, 30)
-        }
-        else if (time === "ninetydays") {
-            getSaleSnapshot(1, 90)
-        }
-        else if (time === "oneyear") {
-            getSaleSnapshot(1, 365)
-        }
-    }, [time])
+        getSaleSnapshot(time)
+    }, [time]);
+
+
 
     return (
         <Container fluid={true} className="snapshot">

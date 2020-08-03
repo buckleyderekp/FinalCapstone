@@ -2,6 +2,7 @@
 import React, { useState, useContext } from "react";
 import { UserProfileContext } from "./UserProfileProvider"
 import "firebase/auth";
+import { AppointmentSessionContext } from "./AppointmentSessionProvider";
 
 export const SaleContext = React.createContext();
 
@@ -11,14 +12,15 @@ export const SaleProvider = (props) => {
     const [salesByProduct, setSalesByProduct] = useState([]);
     const [commissionByProduct, setCommissionByProduct] = useState([]);
     const [snapshot, setSnapshot] = useState([]);
+    const { time } = useContext(AppointmentSessionContext)
 
     const apiUrl = "/api/sale";
     const { getToken } = useContext(UserProfileContext);
 
 
-    const getTimeSales = (id, days) =>
+    const getTimeSales = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/?days=${days}`, {
+            fetch(`${apiUrl}/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -29,9 +31,9 @@ export const SaleProvider = (props) => {
                     return res
                 }));
 
-    const getClosingRatio = (id, days) =>
+    const getClosingRatio = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/closingratio/?days=${days}`, {
+            fetch(`${apiUrl}/closingratio/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -42,9 +44,9 @@ export const SaleProvider = (props) => {
                     return res
                 }));
 
-    const getSalesByProduct = (id, days) =>
+    const getSalesByProduct = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/salesbyproduct/?days=${days}`, {
+            fetch(`${apiUrl}/salesbyproduct/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -55,9 +57,9 @@ export const SaleProvider = (props) => {
                     return res
                 }));
 
-    const getCommissionByProduct = (id, days) =>
+    const getCommissionByProduct = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/commissionbyproduct/?days=${days}`, {
+            fetch(`${apiUrl}/commissionbyproduct/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -68,9 +70,9 @@ export const SaleProvider = (props) => {
                     return res
                 }));
 
-    const getSaleSnapshot = (id, days) =>
+    const getSaleSnapshot = (days) =>
         getToken().then((token) =>
-            fetch(`${apiUrl}/${id}/salesnapshot/?days=${days}`, {
+            fetch(`${apiUrl}/salesnapshot/?days=${days}`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -97,7 +99,7 @@ export const SaleProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            }));
+            }).then(() => getTimeSales(time)));
 
 
     const getSale = (id) => {
@@ -114,7 +116,7 @@ export const SaleProvider = (props) => {
                 }
                 else { throw new Error("Unauthorized"); }
             }));
-    }
+    };
 
 
     const deleteSaleById = (id) => {
@@ -129,13 +131,12 @@ export const SaleProvider = (props) => {
                     return;
                 }
                 throw new Error("Failed to delete session.")
-            })
-        );
+            })).then(() => getTimeSales(time))
     };
 
-    const editSale = (id, sale) => {
+    const editSale = (sale) => {
         return getToken().then((token) =>
-            fetch(apiUrl + `/${id}`, {
+            fetch(apiUrl, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -147,7 +148,7 @@ export const SaleProvider = (props) => {
                     return;
                 }
                 throw new Error("Unauthorized");
-            }))
+            })).then(() => getTimeSales(time));
     };
 
 

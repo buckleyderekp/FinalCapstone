@@ -24,6 +24,7 @@ namespace FinalCapstone.Repositories
             return _context.Sales
                             .Where(s => s.UserProfileId == id)
                             .Where(s => s.Date >= startdate)
+                            .Include(s => s.Product )
                             .OrderByDescending(s => s.Date)
                             .ToList();
         }
@@ -96,12 +97,12 @@ namespace FinalCapstone.Repositories
 
         }
 
-        public IEnumerable<SaleByTypeViewModel> GetCommissionByProduct(int id, DateTime startdate)
+        public IEnumerable<CommissionByProductViewModel> GetCommissionByProduct(int id, DateTime startdate)
         {
             return _context.Product
 
                             .Select(p =>
-                              new SaleByTypeViewModel()
+                              new CommissionByProductViewModel()
                               {
                                   NumberOfSales = _context.Sales
                                   .Where(s => s.UserProfileId == id && s.Date >= startdate && s.ProductId == p.Id)

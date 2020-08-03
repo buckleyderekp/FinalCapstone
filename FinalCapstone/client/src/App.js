@@ -9,6 +9,7 @@ import { UserProfileProvider } from './components/providers/UserProfileProvider'
 import { CallSessionProvider } from './components/providers/CallSessionProvider';
 import { AppointmentSessionProvider } from './components/providers/AppointmentSessionProvider';
 import { SaleProvider } from './components/providers/SaleProvider';
+import { ProductProvider } from './components/providers/ProductProvider';
 
 
 const firebaseConfig = {
@@ -21,14 +22,16 @@ function App() {
   return (
     <Router>
       <UserProfileProvider>
-        <CallSessionProvider>
-          <AppointmentSessionProvider>
+        <AppointmentSessionProvider>
+          <CallSessionProvider>
             <SaleProvider>
-              <Header />
-              <ApplicationViews />
+              <ProductProvider>
+                <Header />
+                <ApplicationViews />
+              </ProductProvider>
             </SaleProvider>
-          </AppointmentSessionProvider>
-        </CallSessionProvider>
+          </CallSessionProvider>
+        </AppointmentSessionProvider>
       </UserProfileProvider>
     </Router>
   );

@@ -9,7 +9,6 @@
 .activityContainer{
     background-color: White;
     border-radius: 10px 10px 10px 10px;
-    width: 150%;
     box-shadow: 0px 12px 18px -6px rgba(0,0,0,0.5);
     margin: 30px auto; 
 }
@@ -18,13 +17,37 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    margin-right: 5px !important;
-    margin-left: 5px !important;
     justify-content: center;
 }
 
 .activityTitle {
     font-family: 'Kanit', sans-serif;
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #212529;
+    margin-top: 40px;
 }
+
+.activityContainer:hover{
+    box-shadow: 0px 18px 25px -6px rgba(0,0,0,0.8);
+}
+
+#override .blue {
+    background-color: #296098;
+    margin-right: 10px;
+}
+
+#override .red {
+    background-color: #982936;
+}
+#override #deleteEntryModal {
+    background-color: #982936;
+}
+
+td {
+
+    font-family: 'Kanit', sans-serif;
+    color: #212529;
+    font-size: 1.2em;
+
+}
+

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { Button } from "reactstrap"
 import { Label, Input, FormGroup } from 'reactstrap';
 import "./CallSessionView.css"
@@ -18,6 +18,11 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     const date = require('moment')().format('YYYY-MM-DD HH:mm:ss');
     let momentDate = moment(Date());
     let formattedDate = momentDate.utc().format("YYYY/DD/MM, h:mm:ss a");
+
+    const AddAppointmentUpdate = () => {
+        setAppointments(appointments + 1)
+    }
+
 
     const callSessionStart = { callGoal, calls, contacts, appointments, date }
     const callSessionActive = { id, callGoal, calls, contacts, appointments, date }
@@ -75,10 +80,8 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
             <>
                 <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
                 <Button className="callSessionLeft" onClick={() => {
-                    setAppointments(appointments + 1)
-                    editCallSession(callSessionActive)
+                    AddAppointmentUpdate().then(() => editCallSession(callSessionActive)).then(() => setCallSessionState("logCall"))
 
-                    setCallSessionState("logCall")
                 }}>Booked</Button>
                 <Button className="callSessionRight" onClick={() => {
                     editCallSession(callSessionActive)

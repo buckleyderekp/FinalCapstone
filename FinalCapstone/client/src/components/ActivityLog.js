@@ -11,6 +11,7 @@ import { AddCallSessionForm } from "./forms/AddCallSessionForm";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Row, Form } from 'reactstrap';
 import { AddAppointmentSessionForm } from "./forms/AddAppointmentSessionForm";
 import { AddSaleForm } from "./forms/AddSaleForm";
+import { CallSessionView } from "./displays/CallSessionView";
 
 
 export const AcitivyLog = () => {
@@ -20,6 +21,8 @@ export const AcitivyLog = () => {
     const { time, setTime, getTimeAppointmentSessions, appointmentSessions, addAppointmentSession } = useContext(AppointmentSessionContext)
     const [callSessionModal, setCallSessionModal] = useState(false);
     const addCallSessionToggle = () => setCallSessionModal(!callSessionModal);
+    const [activeCallSessionModal, setActiveCallSessionModal] = useState(false);
+    const startCallSessionToggle = () => setActiveCallSessionModal(!activeCallSessionModal);
     const [appointmentSessionModal, setAppointmentSessionModal] = useState(false);
     const addAppointmentSessionToggle = () => setAppointmentSessionModal(!appointmentSessionModal);
     const [saleModal, setSaleModal] = useState(false);
@@ -61,7 +64,7 @@ export const AcitivyLog = () => {
             </div>
             <div className="container">
                 <Row lg={{ size: 12 }} className="activityTitle callLog">Call Log</Row>
-                <Row lg={{ size: 12 }}><Button onClick={addCallSessionToggle} color="dark">Add Call Session</Button></Row>
+                <Row lg={{ size: 12 }}><Button onClick={addCallSessionToggle} color="dark">Add Call Session</Button><Button onClick={startCallSessionToggle} color="dark" className="startCallSessionBtn">Start Call Session</Button></Row>
                 <Row lg={{ size: 12 }} className="activityContainer callLog">    <Table striped>
                     <thead>
                         <tr>
@@ -156,6 +159,12 @@ export const AcitivyLog = () => {
                         </ModalFooter>
                     </ModalBody>
                 </Form>
+            </Modal>
+            <Modal isOpen={activeCallSessionModal} toggle={startCallSessionToggle} >
+                <ModalBody>
+                    <ModalHeader startCallSessionToggle={startCallSessionToggle}>Call Session</ModalHeader>
+                    <CallSessionView startCallSessionToggle={startCallSessionToggle} />
+                </ModalBody>
             </Modal>
         </>
 

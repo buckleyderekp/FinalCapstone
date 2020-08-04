@@ -1,0 +1,29 @@
+.snapshotModal--key {
+    display: flex;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-size: 3em;
+    color: #212529;
+}
+
+.snapshotModal--title {
+    display: flex;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-size: 2.5em;
+    color: #212529;
+}
+
+.snapshotModal--columnTitle {
+    display: flex;
+    justify-content: center;
+  margin-top: auto;
+}
+
+.snapshotModal--columnValue {
+    display: flex;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-size: 5em;
+    color: #296098;
+}

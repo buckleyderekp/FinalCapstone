@@ -42,8 +42,9 @@ export const CallSessionProvider = (props) => {
                     return res
                 }));
 
-    const addCallSession = (callsession) =>
-        getToken().then((token) =>
+    const addCallSession = (callsession) => {
+
+        return getToken().then((token) =>
             fetch(apiUrl, {
                 method: "POST",
                 headers: {
@@ -56,7 +57,11 @@ export const CallSessionProvider = (props) => {
                     return resp.json();
                 }
                 throw new Error("Unauthorized");
-            })).then(() => getTimeCallSessions(time));
+            })).then((res) => {
+                getTimeCallSessions(time)
+                return res
+            })
+    };
 
 
     const getSession = (id) => {

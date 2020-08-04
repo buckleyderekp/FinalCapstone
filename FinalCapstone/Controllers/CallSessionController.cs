@@ -49,16 +49,9 @@ namespace FinalCapstone.Controllers
         public IActionResult Put(CallSession callsession)
         {
             var currentUser = GetCurrentUserProfile();
-            if (callsession.UserProfileId == currentUser.Id)
-            {
-                _callSessionRepo.Update(callsession);
-                return NoContent();
-            }
-            else
-            {
-                return Unauthorized();
-            }
-
+            callsession.UserProfileId = currentUser.Id;
+            _callSessionRepo.Update(callsession);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

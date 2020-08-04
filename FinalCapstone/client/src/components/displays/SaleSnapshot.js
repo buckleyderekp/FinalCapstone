@@ -13,9 +13,7 @@ export const SaleSnapshot = () => {
     const { time } = useContext(AppointmentSessionContext)
 
 
-    useEffect(() => {
-        getSaleSnapshot(time)
-    }, []);
+
 
     useEffect(() => {
         getSaleSnapshot(time)

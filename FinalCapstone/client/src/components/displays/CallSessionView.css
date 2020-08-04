@@ -1,0 +1,17 @@
+.callSessionLeft {
+    margin-left: 40px;
+  
+}
+
+.callSessionRight {
+    margin-left: 200px;
+}
+
+.callSessionGoal {
+    display: flex;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    color: #982936;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}

@@ -57,3 +57,17 @@
     margin-left: 13px;
 }
 
+.callComparisonModalBody{
+    height: 450px;
+    width: 700px;
+}
+
+#override .callComparisonModal{
+   height:  700px;
+}
+
+.chartContainer{
+    height: 500px;
+
+}
+

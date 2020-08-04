@@ -14,18 +14,26 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     const [id, setId] = useState(0)
     const [calls, setCalls] = useState(0)
     const [contacts, setContacts] = useState(0)
-    const [appointments, setAppointments] = useState(0)
+    const [appointmentsBooked, setAppointmentsBooked] = useState(0)
     const date = require('moment')().format('YYYY-MM-DD HH:mm:ss');
     let momentDate = moment(Date());
     let formattedDate = momentDate.utc().format("YYYY/DD/MM, h:mm:ss a");
 
-    const AddAppointmentUpdate = () => {
-        setAppointments(appointments + 1)
-    }
 
 
-    const callSessionStart = { callGoal, calls, contacts, appointments, date }
-    const callSessionActive = { id, callGoal, calls, contacts, appointments, date }
+    useEffect(() => {
+        console.log(appointmentsBooked)
+        if (appointmentsBooked === 0) {
+            return
+        }
+        editCallSession(callSessionActive).then(() => setCallSessionState("logCall"))
+
+    }, [appointmentsBooked]);
+
+
+
+    const callSessionStart = { callGoal, calls, contacts, appointmentsBooked, date }
+    const callSessionActive = { id, callGoal, calls, contacts, appointmentsBooked, date }
 
     if (callSessionState === "startSession") {
         return (
@@ -80,7 +88,7 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
             <>
                 <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
                 <Button className="callSessionLeft" onClick={() => {
-                    AddAppointmentUpdate().then(() => editCallSession(callSessionActive)).then(() => setCallSessionState("logCall"))
+                    setAppointmentsBooked(appointmentsBooked + 1)
 
                 }}>Booked</Button>
                 <Button className="callSessionRight" onClick={() => {

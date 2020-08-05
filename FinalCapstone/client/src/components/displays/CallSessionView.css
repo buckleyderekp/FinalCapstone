@@ -15,3 +15,11 @@
     margin-bottom: 15px;
     font-size: 1.5em;
 }
+.callSessionGoalHit {
+    display: flex;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    color: #598829;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}

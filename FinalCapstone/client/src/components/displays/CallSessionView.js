@@ -19,6 +19,24 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     let momentDate = moment(Date());
     let formattedDate = momentDate.utc().format("YYYY/DD/MM, h:mm:ss a");
 
+    const GoalTracker = () =>{
+        if(calls < callGoal){
+            return (
+                <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
+            )
+        }
+        else if(calls ==    callGoal){
+            return (
+                <div className="callSessionGoalHit">You've reached your goal!</div>
+            )
+        }
+        else if ( calls > callGoal){
+            return(
+                <div className="callSessionGoalHit">You're {calls - callGoal} calls over your goal!</div>
+            )
+        }
+    }
+
 
 
     useEffect(() => {
@@ -54,7 +72,7 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     else if (callSessionState === "logCall") {
         return (
             <>
-                <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
+                {GoalTracker()}
                 <Button className="callSessionLeft" onClick={() => {
 
                     setCalls(calls + 1)
@@ -70,7 +88,8 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     else if (callSessionState === "answer?") {
         return (
             <>
-                <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
+            
+            {GoalTracker()}
                 <Button className="callSessionLeft" onClick={() => {
                     setContacts(contacts + 1)
                     setCallSessionState("appointment?")
@@ -86,7 +105,7 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     else if (callSessionState === "appointment?") {
         return (
             <>
-                <div className="callSessionGoal">You're only {callGoal - calls} away from your goal!</div>
+                {GoalTracker()}
                 <Button className="callSessionLeft" onClick={() => {
                     setAppointmentsBooked(appointmentsBooked + 1)
 

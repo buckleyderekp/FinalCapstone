@@ -13,7 +13,6 @@ export const AddSaleForm = ({ handleUserInput }) => {
 
     return (
         <>
-
             <div className="form-group">
 
                 <FormGroup>
@@ -22,7 +21,6 @@ export const AddSaleForm = ({ handleUserInput }) => {
                         <option key="0" value="0">Please Select Product</option>
                         {products.map(p => {
                             return <option key={p.id} value={p.id}>{p.productName}</option>
-
                         })}
                     </Input>
                 </FormGroup>

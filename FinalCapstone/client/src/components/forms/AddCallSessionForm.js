@@ -7,9 +7,7 @@ export const AddCallSessionForm = ({ handleUserInput }) => {
 
     return (
         <>
-
             <div className="form-group">
-
                 <FormGroup>
                     <Label for="callGoal">Call Goal</Label>
                     <Input onChange={handleUserInput} type="text" name="text" id="CallGoal" required />

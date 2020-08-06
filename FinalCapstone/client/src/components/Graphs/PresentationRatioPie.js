@@ -9,8 +9,6 @@ export const PresentationPie = () => {
     const { time, getPresentationRatio, presentationRatio } = useContext(AppointmentSessionContext)
 
 
-
-
     useEffect(() => {
         getPresentationRatio(time)
     }, [time]);

@@ -165,7 +165,6 @@ export const SaleProvider = (props) => {
             })).then(() => getTimeSales(time));
     };
 
-
     return (
         <SaleContext.Provider value={{
             closingRatio,

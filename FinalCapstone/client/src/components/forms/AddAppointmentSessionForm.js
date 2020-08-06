@@ -7,9 +7,7 @@ export const AddAppointmentSessionForm = ({ handleUserInput }) => {
 
     return (
         <>
-
             <div className="form-group">
-
                 <FormGroup>
                     <Label for="appointmentsKept">Appointments Kept</Label>
                     <Input onChange={handleUserInput} type="text" name="text" id="appointmentsKept" required />

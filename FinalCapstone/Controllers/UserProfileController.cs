@@ -24,16 +24,6 @@ namespace FinalCapstone.Controllers
                 _organizationRepo = new OrganizationRepository(context);
         }
 
-            //[HttpGet("{id}")]
-            //public IActionResult Get(int id)
-            //{
-            //    var user = _userRepo.GetById(id);
-            //    if (user == null)
-            //    {
-            //        return NotFound();
-            //    }
-            //    return Ok(user);
-            //}
 
             [HttpPost]
             public IActionResult Post(RegisterViewModel registerview)

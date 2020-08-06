@@ -38,7 +38,6 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
     }
 
 
-
     useEffect(() => {
         console.log(appointmentsBooked)
         if (appointmentsBooked === 0) {
@@ -47,7 +46,6 @@ export const CallSessionView = ({ startCallSessionToggle }) => {
         editCallSession(callSessionActive).then(() => setCallSessionState("logCall"))
 
     }, [appointmentsBooked]);
-
 
 
     const callSessionStart = { callGoal, calls, contacts, appointmentsBooked, date }

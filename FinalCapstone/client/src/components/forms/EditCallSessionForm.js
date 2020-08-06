@@ -9,9 +9,7 @@ export const EditCallSessionForm = ({ handleUserEdit, callSession }) => {
 
     return (
         <>
-
             <div className="form-group">
-
                 <FormGroup>
                     <Label for="callGoal">Call Goal</Label>
                     <Input onChange={handleUserEdit} type="number" name="text" id="callGoal" defaultValue={callSession.callGoal} required />

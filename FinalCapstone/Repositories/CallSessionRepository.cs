@@ -48,7 +48,6 @@ namespace FinalCapstone.Repositories
                             .Where(cs => cs.UserProfileId == id)
                             .Where(cs => cs.Date >= startdate)
                             .Sum(cs => cs.AppointmentsBooked);
-
         }
 
         public int GetContactsTotal(int id, DateTime startdate)
@@ -57,7 +56,6 @@ namespace FinalCapstone.Repositories
                             .Where(cs => cs.UserProfileId == id)
                             .Where(cs => cs.Date >= startdate)
                             .Sum(cs => cs.Contacts);
-
         }
 
         public int GetCallsTotal(int id, DateTime startdate)
@@ -75,7 +73,6 @@ namespace FinalCapstone.Repositories
                             .Where(cs => cs.UserProfileId == id)
                             .Where(cs => cs.Date >= startdate)
                             .Sum(cs => cs.CallGoal);
-
         }
 
 

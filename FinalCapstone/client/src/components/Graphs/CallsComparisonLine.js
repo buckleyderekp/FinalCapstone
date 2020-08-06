@@ -12,8 +12,6 @@ export const CallsComparisonLine = () => {
     const [calls, setCalls] = useState([])
 
 
-
-
     useEffect(() => {
             getTimeCallSessions(time)
     }, [time])
@@ -37,7 +35,6 @@ export const CallsComparisonLine = () => {
         setDates(dateArray)
         setGoals(callGoalArray)
     }, [callSessions])
-
 
 
     let lineState = {

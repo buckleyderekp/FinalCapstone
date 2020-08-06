@@ -7,14 +7,9 @@ export const AppointmentRatioPie = () => {
     const { appointmentRatio, getAppointmentRatio, time } = useContext(AppointmentSessionContext)
   
     
-
-
-    
     useEffect(() => {
         getAppointmentRatio(time)
     }, [time]);
-
-
 
     const data = {
         percentageKept: Math.round((appointmentRatio.appointmentsKept)/ appointmentRatio.appointmentsBooked * 100),

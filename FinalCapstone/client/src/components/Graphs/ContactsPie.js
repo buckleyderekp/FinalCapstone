@@ -8,7 +8,6 @@ import { AppointmentSessionContext } from "../providers/AppointmentSessionProvid
     const { contactRatio, getContactRatio} = useContext(CallSessionContext)
     const {time } = useContext(AppointmentSessionContext)
     
-
     
     useEffect(() => {
         getContactRatio(time)

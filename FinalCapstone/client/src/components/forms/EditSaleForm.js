@@ -14,16 +14,13 @@ export const EditSaleForm = ({ handleUserEdit, sale }) => {
 
     return (
         <>
-
             <div className="form-group">
-
                 <FormGroup>
                     <Label for="product">Select</Label>
                     <Input defaultValue={sale.productId} onChange={handleUserEdit} type="select" name="select" id="productId">
                         <option key="0" value="0">Please Select Product</option>
                         {products.map(p => {
                             return <option key={p.id} value={p.id}>{p.productName}</option>
-
                         })}
                     </Input>
                 </FormGroup>

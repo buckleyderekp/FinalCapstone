@@ -55,7 +55,7 @@ export const SaleLog = ({ sale }) => {
                 <ModalHeader toggle={saleToggle}>{formattedDate}</ModalHeader>
                 <ModalBody>
                     Are you sure you want to delete this entry?
-  </ModalBody>
+                </ModalBody>
                 <ModalFooter>
                     <Button className="red" onClick={deleteEntry}>Delete</Button>
                     <Button className="blue" onClick={saleToggle}>Cancel</Button>

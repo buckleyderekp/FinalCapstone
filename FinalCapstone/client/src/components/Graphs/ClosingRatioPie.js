@@ -10,7 +10,6 @@ export const ClosingRatioPie = () => {
     const { time } = useContext(AppointmentSessionContext)
  
 
-
     useEffect(() => {
         getClosingRatio(time)
     }, [time]);

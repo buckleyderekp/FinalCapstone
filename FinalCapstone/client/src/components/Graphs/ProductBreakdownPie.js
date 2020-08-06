@@ -9,8 +9,6 @@ export const ProductBreakdownPie = () => {
     const { time } = useContext(AppointmentSessionContext)
 
 
-
-
     useEffect(() => {
         getSalesByProduct(time)
     }, [time]);
@@ -24,7 +22,6 @@ export const ProductBreakdownPie = () => {
         objectThing[pname] = spb.numberOfSales
     }
     )
-
 
     const productValuesData = Object.values(objectThing)
     const productPercentages = productValuesData.map(pvd => {

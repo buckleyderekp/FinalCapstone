@@ -8,12 +8,10 @@ export const CommissionBreakdownPie = () => {
     const { commissionByProduct, getCommissionByProduct } = useContext(SaleContext)
     const { time } = useContext(AppointmentSessionContext)
 
-  
 
     useEffect(() => {
         getCommissionByProduct(time)
     }, [time]);
-
 
 
     let objectThing = {}

@@ -16,6 +16,7 @@ export const Dashboard = () => {
 
     const { time, setTime } = useContext(AppointmentSessionContext)
 
+  
     const [callComparisonModal, setCallComparisonModal] = useState(false);
     const callComparisonToggle = () => setCallComparisonModal(!callComparisonModal);
     const [saleSnapshotModal, setSaleSnapshotModal] = useState(false);

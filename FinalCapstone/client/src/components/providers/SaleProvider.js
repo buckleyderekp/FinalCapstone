@@ -12,6 +12,7 @@ export const SaleProvider = (props) => {
     const [salesByProduct, setSalesByProduct] = useState([]);
     const [commissionByProduct, setCommissionByProduct] = useState([]);
     const [snapshot, setSnapshot] = useState([]);
+    const [logTotal, setLogTotal] = useState([]);
     const { time } = useContext(AppointmentSessionContext)
 
     const apiUrl = "/api/sale";
@@ -28,6 +29,19 @@ export const SaleProvider = (props) => {
             }).then((res) => res.json())
                 .then((res) => {
                     setSales(res)
+                    return res
+                }));
+
+    const getLogTotals = (days) =>
+        getToken().then((token) =>
+            fetch(`${apiUrl}/alllogtotals/?days=${days}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json())
+                .then((res) => {
+                    setLogTotal(res)
                     return res
                 }));
 
@@ -172,7 +186,10 @@ export const SaleProvider = (props) => {
             getCommissionByProduct,
             getSaleSnapshot,
             snapshot,
-            setSnapshot
+            setSnapshot,
+            getLogTotals,
+            logTotal,
+            setLogTotal
         }}>
             {props.children}
         </SaleContext.Provider>

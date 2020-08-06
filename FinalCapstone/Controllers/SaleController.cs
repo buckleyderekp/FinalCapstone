@@ -62,15 +62,35 @@ namespace FinalCapstone.Controllers
             return Ok(commissionByProduct);
         }
 
-        //[HttpGet("GetUsersSalesCountByOrg")]
-        //public IActionResult GetUsersSalesCountByOrg(int days)
-        //{
-        //    var currentUser = GetCurrentUserProfile();
-        //    var startdate = DateTime.Now - TimeSpan.FromDays(days);
-        //    var userSaleCount = _saleRepo.GetUsersSalesCountByOrg(currentUser.OrganizationId, startdate);
+        [HttpGet("allLogtotals")]
+        public IActionResult GetAllLogTotals(int days)
+        {
+            var currentUser = GetCurrentUserProfile();
+            var startdate = DateTime.Now - TimeSpan.FromDays(days);
+            var presentations = _appointmentSessionRepo.GetPresentationsTotal(currentUser.Id, startdate);
+            var appointmentsKept = _appointmentSessionRepo.GetAppointmentKeptTotal(currentUser.Id, startdate);
+            var calls = _callSessionRepo.GetCallsTotal(currentUser.Id, startdate);
+            var callGoal = _callSessionRepo.GetCallGoalsTotal(currentUser.Id, startdate);
+            var contacts = _callSessionRepo.GetContactsTotal(currentUser.Id, startdate);
+            var appointments = _callSessionRepo.GetAppointmentBookedTotal(currentUser.Id, startdate);
+            var closes = _saleRepo.GetClosesTotal(currentUser.Id, startdate);
+            var commission = _saleRepo.GetCommissionTotal(currentUser.Id, startdate);
 
-        //    return Ok(userSaleCount);
-        //}
+            var logTotals = new LogTotalsViewModel()
+            {
+                Commission = commission,
+                Calls = calls,
+                Appointments = appointments,
+                AppointmentsKept = appointmentsKept,
+                Presentations = presentations,
+                Contacts = contacts,
+                Closes = closes,
+                CallGoals = callGoal
+            };
+
+            return Ok(logTotals);
+
+        }
 
         [HttpGet("closingratio")]
         public IActionResult GetClosingRatio(int days)

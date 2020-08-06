@@ -16,7 +16,7 @@ import { CallSessionView } from "./displays/CallSessionView";
 
 export const AcitivyLog = () => {
 
-    const { getTimeSales, sales, addSale } = useContext(SaleContext)
+    const { getTimeSales, sales, addSale, logTotal, getLogTotals } = useContext(SaleContext)
     const { getTimeCallSessions, callSessions, addCallSession } = useContext(CallSessionContext)
     const { time, setTime, getTimeAppointmentSessions, appointmentSessions, addAppointmentSession } = useContext(AppointmentSessionContext)
     const [callSessionModal, setCallSessionModal] = useState(false);
@@ -28,6 +28,7 @@ export const AcitivyLog = () => {
     const [saleModal, setSaleModal] = useState(false);
     const addSaleToggle = () => setSaleModal(!saleModal);
     const [userInput, setUserInput] = useState(null);
+
 
     const handleUserInput = (e) => {
         const updatedState = { ...userInput }
@@ -50,6 +51,7 @@ export const AcitivyLog = () => {
         getTimeCallSessions(time)
         getTimeAppointmentSessions(time)
         getTimeSales(time)
+        getLogTotals(time)
     }, [time]);
 
 
@@ -59,7 +61,7 @@ export const AcitivyLog = () => {
             <div className="buttoncontainer">
                 {(time === 7) ? <Button color="light" className="timeButton buttonseven" >Past 7 Days</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime(7)}>Past 7 Days</Button>}
                 {(time === 30) ? <Button color="light" className="timeButton buttonthirty" >Past 30 Days</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime(30)}>Past 30 Days</Button>}
-                {(time === 90) ? <Button color="light" className="timeButton buttonninety" >Past 90 Days</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime(60)}>Past 90 Days</Button>}
+                {(time === 90) ? <Button color="light" className="timeButton buttonninety" >Past 90 Days</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime(90)}>Past 90 Days</Button>}
                 {(time === 365) ? <Button color="light" className="timeButton buttonone" >Past year</Button> : <Button color="dark" className="timeButton buttonSeven" onClick={() => setTime(365)}>Past year</Button>}
             </div>
             <div className="container">
@@ -83,6 +85,16 @@ export const AcitivyLog = () => {
 
                         })}
                     </tbody>
+                    <thead>
+                        <tr>
+                            <td>Totals</td>
+                            <td>{logTotal.callGoals}</td>
+                            <td>{logTotal.calls}</td>
+                            <td>{logTotal.contacts}</td>
+                            <td>{logTotal.appointments}</td>
+                            <td></td>
+                        </tr>
+                    </thead>
                 </Table></Row>
                 <Row lg={{ size: 12 }} className="activityTitle appointmentLog">Appointment Log</Row>
                 <Row lg={{ size: 12 }}><Button onClick={addAppointmentSessionToggle} color="dark">Add Appointment Session</Button></Row>
@@ -102,6 +114,14 @@ export const AcitivyLog = () => {
 
                         })}
                     </tbody>
+                    <thead>
+                        <tr>
+                            <td>Total</td>
+                            <td>{logTotal.appointmentsKept}</td>
+                            <td>{logTotal.presentations}</td>
+                            <td></td>
+                        </tr>
+                    </thead>
                 </Table></Row>
                 <Row lg={{ size: 12 }} className="activityTitle salesLog">Sales Log</Row>
                 <Row lg={{ size: 12 }}><Button onClick={addSaleToggle} color="dark">Add Sale</Button></Row>
@@ -122,6 +142,15 @@ export const AcitivyLog = () => {
 
                         })}
                     </tbody>
+                    <thead>
+                        <tr>
+                            <td>Total</td>
+                            <td></td>
+                            <td>{logTotal.closes}</td>
+                            <td>${logTotal.commission}</td>
+                            <td></td>
+                        </tr>
+                    </thead>
                 </Table></Row>
             </div>
             <Modal isOpen={callSessionModal} toggle={addCallSessionToggle} >

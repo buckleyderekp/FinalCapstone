@@ -54,6 +54,12 @@ export const AcitivyLog = () => {
         getLogTotals(time)
     }, [time]);
 
+    useEffect(() => {
+        getLogTotals(time)
+    }, [callSessions, appointmentSessions, sales]);
+
+
+
 
     return (
         <>

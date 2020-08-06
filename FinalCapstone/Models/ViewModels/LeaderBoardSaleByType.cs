@@ -7,9 +7,15 @@ namespace FinalCapstone.Models.ViewModels
 {
     public class LeaderBoardSaleByType
     {
-        public int NumberOfSales { get; set; }
 
         public Product Product { get; set; }
+
+        public List<int> Users { get; set; }
+
+    }
+    public class LeaderboardUser
+    {
+        public int NumberOfSales { get; set; }
 
         public string UserName { get; set; }
     }

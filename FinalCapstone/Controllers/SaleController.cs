@@ -62,6 +62,16 @@ namespace FinalCapstone.Controllers
             return Ok(commissionByProduct);
         }
 
+        //[HttpGet("GetUsersSalesCountByOrg")]
+        //public IActionResult GetUsersSalesCountByOrg(int days)
+        //{
+        //    var currentUser = GetCurrentUserProfile();
+        //    var startdate = DateTime.Now - TimeSpan.FromDays(days);
+        //    var userSaleCount = _saleRepo.GetUsersSalesCountByOrg(currentUser.OrganizationId, startdate);
+
+        //    return Ok(userSaleCount);
+        //}
+
         [HttpGet("closingratio")]
         public IActionResult GetClosingRatio(int days)
         {

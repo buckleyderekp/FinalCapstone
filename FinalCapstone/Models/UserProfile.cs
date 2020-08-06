@@ -31,5 +31,7 @@ namespace FinalCapstone.Models
         [Required]
         public int OrganizationId { get; set; }
         public Organization Organization { get; set; }
+
+        public List<Sale> Sales { get; set; } 
     }
 }

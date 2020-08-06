@@ -19,7 +19,7 @@ export default function Header() {
     return (
         <div>
             <Navbar color="dark" dark expand="md">
-                <NavbarBrand >My App</NavbarBrand>
+                <NavbarBrand >Sales Activity Tracker</NavbarBrand>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>

@@ -63,6 +63,47 @@ namespace FinalCapstone.Repositories
 
         }
 
+        //public IEnumerable<LeaderBoardSaleByType> GetSalesTotalForUsers(int id, DateTime startdate)
+        //{
+        //    return _context.Sales
+        //                    .Include(s => s.UserProfile)
+        //                    .Where(s => s.UserProfile.OrganizationId == id)
+        //                    .Where(s => s.Date >= startdate)
+        //                    //.GroupBy(s => new
+        //                    //{
+        //                    //    s.Product.Id,
+        //                    //    s.Product.ProductName,
+        //                    //    s.UserProfile.Name
+        //                    //})
+        //                    .Select( s => new LeaderBoardSaleByType()
+        //                    {
+        //                        Product = s.Product,
+        //                        Users =  _context.UserProfile
+        //                        .Where(up => up.OrganizationId == id)
+        //                        .Include(up => up.Sales)
+        //                        .GroupBy( up => up.Sales.Count)
+
+        //                    }).ToList();
+
+        //}
+
+        //public IEnumerable<LeaderboardSaleCount> GetUsersSalesCountByOrg(int id, DateTime startdate)
+        //{
+        //    return _context.Sales
+        //        .Include(s => s.UserProfile)
+        //        .Where(s => s.UserProfile.OrganizationId == id)
+        //        .GroupBy(s => s.UserProfile.Name)
+        //        .Select(s => new LeaderboardSaleCount()
+        //        {
+        //            NumberOfSales = _context.Sales
+        //                    .Where(s => s.UserProfile.OrganizationId == id)
+        //                    .Where(s => s.Date >= startdate)
+        //                    .Count(),
+        //            UserName = s.UserPr `edwcvfofile.Name
+        //        }).ToList().Take(5);
+        //}
+
+
         public int GetClosesTotal(int id, DateTime startdate)
         {
             return _context.Sales
@@ -96,6 +137,25 @@ namespace FinalCapstone.Repositories
                               }).ToList();
 
         }
+
+        //public IEnumerable<LeaderBoardSaleByType> GetSalesByProductForLeaderBoard(int id, DateTime startdate)
+        //{
+        //    return _context.Product
+
+        //                    .Select(p =>
+        //                      new LeaderBoardSaleByType()
+        //                      {
+        //                          NumberOfSales = _context.Sales
+        //                          .Count(s => s.UserProfileId == id && s.Date >= startdate && s.ProductId == p.Id),
+        //                          Product = p,
+        //                          UserName = _context.Sales
+        //                          .Include(s => s.UserProfile)
+        //                          .Where(s => s.UserProfile.OrganizationId == id)
+                                  
+
+        //                      }).ToList().Take(5);
+
+        //}
 
         public IEnumerable<CommissionByProductViewModel> GetCommissionByProduct(int id, DateTime startdate)
         {
